@@ -36,7 +36,13 @@
       eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
     </title>
     @livewireStyles
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <style>
+        .swal2-container{
+            z-index:100000000 !important;
+        }
+        </style>
   </head>
        @vite(['resources/css/app.css', 'resources/js/app.js'])
   <body
@@ -78,7 +84,8 @@
       <!-- ===== Content Area End ===== -->
     </div>
     @livewireScripts
-
+@stack('script')
     <!-- ===== Page Wrapper End ===== -->
+
   </body>
 </html>
