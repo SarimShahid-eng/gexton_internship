@@ -1,27 +1,4 @@
-{{-- <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>{{ $title ?? 'Page Title' }}</title>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css'
-        integrity='sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=='
-        crossorigin='anonymous' />
-    @livewireStyles
-
-</head>
-
-<body>
-    <div class="container mt-5">
-        {{ $slot }}
-    </div>
-    @livewireScripts
-
-</body>
-
-</html> --}}
 
 <!doctype html>
 <html lang="en">
@@ -36,7 +13,13 @@
       eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
     </title>
     @livewireStyles
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <style>
+        .swal2-container{
+            z-index:100000000 !important;
+        }
+        </style>
   </head>
        @vite(['resources/css/app.css', 'resources/js/app.js'])
   <body
@@ -78,7 +61,8 @@
       <!-- ===== Content Area End ===== -->
     </div>
     @livewireScripts
-
+@stack('script')
     <!-- ===== Page Wrapper End ===== -->
+
   </body>
 </html>

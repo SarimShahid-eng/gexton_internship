@@ -1,13 +1,18 @@
+<?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionsTable extends Migration
+return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->bigIncrements('id'); // UNSIGNED bigint AUTO_INCREMENT
+            $table->id();
             $table->string('title')->nullable();
             $table->integer('course_id')->nullable();
             $table->integer('session_id')->nullable();
@@ -20,11 +25,15 @@ class CreateQuestionsTable extends Migration
             $table->text('desc_images')->nullable();
             $table->text('video_link')->nullable();
             $table->enum('is_publish', ['publish', 'not_publish'])->default('not_publish');
+            $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('questions');
     }
-}
+};
