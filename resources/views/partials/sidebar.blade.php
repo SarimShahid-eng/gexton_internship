@@ -31,7 +31,7 @@
     class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar"
   >
     <!-- Sidebar Menu -->
-    <nav x-data="{selected: $persist('Dashboard')}">
+    <nav x-data="{selected: 'Dashboard'}">
       <!-- Menu Group -->
       <div>
         <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
@@ -64,7 +64,7 @@
           <!-- Menu Item Dashboard -->
           <li>
             <a
-             href="{{ route('dashboard') }}" wire:navigate
+             href="{{ route('dashboard') }}"
               class="menu-item group"
               :class=" (selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' || page === 'marketing' || page === 'crm' || page === 'stocks') ? 'menu-item-active' : 'menu-item-inactive'"
             >
@@ -100,7 +100,7 @@
           <!-- Menu Item Calendar -->
           <li>
             <a
-              href="{{ route('courses_create') }}" wire:navigate
+              href="{{ route('courses_create') }}"
               @click="selected = (selected === 'Calendar' ? '':'Calendar')"
               class="menu-item group"
               :class=" (selected === 'Calendar') && (page === 'calendar') ? 'menu-item-active' : 'menu-item-inactive'"
