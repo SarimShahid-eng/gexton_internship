@@ -3,7 +3,7 @@
         <div
             class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
             <h5 class="flex justify-between items-center text-lg font-semibold">
-                Create Courses
+                Create Groups
 
                 <!-- Toggle Button -->
                 <button @click="showCourseForm = !showCourseForm" class="transition-transform hover:rotate-90">
@@ -33,11 +33,9 @@
                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         dark:border-gray-700 dark:bg-dark-900 dark:text-white/90">
                             <option value="">Select Course</option>
-                            {{-- @foreach ($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->title }}</option>
-                            @endforeach --}}
-                            <option value="1">HTML</option>
-                            <option value="2">CSS</option>
+                            @foreach ($courses as $course)
+                                <option value="{{ $course->id }}">{{ $course->course_title }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -89,12 +87,12 @@
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Session Year
                         </label>
-                        <input type="text" disabled  value="{{$session_active->session_year}}"
+                        <input type="text" disabled value="{{ $session_active->session_year }}"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
         h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
-                        <input type="hidden" wire:model="session_year_id"  />
+                        <input type="hidden" wire:model="session_year_id" />
                     </div>
 
 
@@ -144,13 +142,13 @@
                                     </p>
                                 </div>
                             </th>
-                            {{-- <th class="py-3">
+                            <th class="py-3">
                                 <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
                                         Teacher Name
                                     </p>
                                 </div>
-                            </th > --}}
+                            </th>
                             <th class="py-3">
                                 <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
@@ -195,16 +193,16 @@
 
 
                         @forelse ($batches as $batch)
-                        <tr>
-                            <td class="py-3">
-                                <div class="flex items-center gap-3">
-                                    <div>
-                                        <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                            {{ $batch->created_at->format('d M Y') }}
-                                        </p>
+                            <tr>
+                                <td class="py-3">
+                                    <div class="flex items-center gap-3">
+                                        <div>
+                                            <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                                                {{ $batch->created_at->format('d M Y') }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
 
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
@@ -213,37 +211,34 @@
                                 </td>
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{ $batch->teacher->full_name  }}
+                                        {{ $batch->teacher->fullname }}
                                     </p>
                                 </td>
 
 
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{-- {{ $batch->course->title ?? 'N/A' }} --}}
-                                        {{ $batch->course_id }}
+                                        {{ $batch->course->course_title ?? 'N/A' }}
                                     </p>
                                 </td>
 
-
-
-                            <td class="py-3">
-                                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                    {{ \Carbon\Carbon::parse($batch->from)->format('h:i A') }} -
-                                    {{ \Carbon\Carbon::parse($batch->to)->format('h:i A') }}
-                                </p>
-                            </td>
-                            <td class="py-3">
-                                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                    {{ $batch->sessionYear->session_year ?? 'N/A' }}
-                                </p>
-                            </td>
-                            <td class="py-3">
-                                <span
-                                    class="text-theme-sm font-medium {{ $batch->is_completed ? 'text-green-600' : 'text-yellow-600' }}">
-                                    {{ $batch->is_completed ? 'Completed' : 'Non Complete' }}
-                                </span>
-                            </td>
+                                <td class="py-3">
+                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                                        {{ \Carbon\Carbon::parse($batch->from)->format('h:i A') }} -
+                                        {{ \Carbon\Carbon::parse($batch->to)->format('h:i A') }}
+                                    </p>
+                                </td>
+                                <td class="py-3">
+                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                                        {{ $batch->sessionYear->session_year ?? 'N/A' }}
+                                    </p>
+                                </td>
+                                <td class="py-3">
+                                    <span
+                                        class="text-theme-sm font-medium {{ $batch->is_completed ? 'text-green-600' : 'text-blue-400' }}">
+                                        {{ $batch->is_completed ? 'Completed' : 'Non Complete' }}
+                                    </span>
+                                </td>
 
                                 <td class="py-3">
                                     <div class="flex items-center gap-2">
