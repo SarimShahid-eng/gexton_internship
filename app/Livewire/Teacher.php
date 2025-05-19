@@ -2,74 +2,89 @@
 
 namespace App\Livewire;
 
+use App\Models\CustomSession;
+use App\Models\User;
 use Livewire\Component;
-use App\Models\Teacher as TeacherModel;
 use Illuminate\Support\Facades\Crypt;
 
 
 class Teacher extends Component
 {
-    public $first_name, $last_name, $email, $phone, $session, $password, $status, $id;
+    public $firstname, $lastname, $email, $phone, $session_year_id, $password, $is_active, $id;
 
 
 
     public function render()
     {
-        $teachers = TeacherModel::get();
-        return view('livewire.teacher', compact('teachers'));
+        $session_active = CustomSession::where('is_selected',1)->first();
+        $this->session_year_id = $session_active->id;
+        $teachers = User::with('session')->where('session_year_id',$session_active->id)->get();
+        return view('livewire.teacher', compact('teachers','session_active'));
     }
     public function save()
     {
         $rules = [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email|unique:teachers,email',
-            'phone' => 'required|unique:teachers,phone',
-            'session' => 'required',
-            'status' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|unique:users,phone',
+            'session_year_id' => 'required|integer',
+            'is_active' => 'required',
         ];
-
+        // dd($this->all());
         // If updating, ignore unique check for current record
         if ($this->id) {
-            $rules['email'] = 'required|email|unique:teachers,email,' . $this->id;
-            $rules['phone'] = 'required|unique:teachers,phone,' . $this->id;
+            $rules['email'] = 'required|email|unique:users,email,' . $this->id;
+            $rules['phone'] = 'required|unique:users,phone,' . $this->id;
         }
 
         $validatedData = $this->validate($rules);
-
+        // dd($validatedData);
         // Encrypt password if provided
         if ($this->password) {
             $validatedData['password'] = Crypt::encrypt($this->password);
         }
 
         if ($this->id) {
-            TeacherModel::where('id', $this->id)->update($validatedData);
+            User::where('id', $this->id)->update($validatedData);
             session()->flash('message', 'Teacher Updated Successfully');
         } else {
-            TeacherModel::create($validatedData);
+            User::create($validatedData);
             session()->flash('message', 'Teacher Created Successfully');
         }
 
+        $message = $this->id ? 'updated' : 'saved';
         $this->reset();
+        $this->dispatch(
+            'course-saved',
+            title: 'Success!',
+            text: "Teacher has been $message successfully.",
+            icon: 'success',
+        );
     }
     function edit($id)
     {
-        $teacher = TeacherModel::find($id);
+        $teacher = User::find($id);
 
-        $this->first_name = $teacher->first_name;
-        $this->last_name = $teacher->last_name;
+        $this->firstname = $teacher->firstname;
+        $this->lastname = $teacher->lastname;
         $this->email = $teacher->email;
         $this->phone = $teacher->phone;
-        $this->session = $teacher->session;
+        $this->session_year_id = $teacher->session_year_id;
         // $this->password = $password;
-        $this->status = $teacher->status;
+        $this->is_active = $teacher->is_active;
         $this->id = $teacher->id;
     }
-    function delete($id)
+    public function confirmDelete($courseId)
     {
-        $teacher = TeacherModel::find($id);
-        $teacher->delete();
-        session()->flash('message', 'Teacher Deleted Successfully');
+        $this->id = $courseId;
+        $this->dispatch('swal-confirm');
+    }
+    public function deleteCourse()
+    {
+         User::destroy($this->id); // Find the course by ID
+
+            $this->dispatch('course-deleted', title: 'Deleted!', text: 'Teacher has been deleted successfully.', icon: 'success');
     }
 
 }
