@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('custom_sessions', function (Blueprint $table) {
             $table->id();
             $table->string('session_year', 40)->nullable();
             $table->dateTime('created_date')->nullable();
             $table->tinyInteger('is_selected')->default(0);
+
             $table->timestamps();
         });
     }
@@ -25,6 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+
         Schema::dropIfExists('custom_sessions');
     }
 };
