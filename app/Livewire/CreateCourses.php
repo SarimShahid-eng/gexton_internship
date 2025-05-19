@@ -10,11 +10,7 @@ class CreateCourses extends Component
 {
 
     public $course_title, $course_description, $Duration, $created_date, $session_year_id, $test_time, $questions_limit, $hours, $minutes, $update_id, $courseIdToDelete;
-    //   public function confirmDelete($courseId)
-    // {
-    //     $this->courseIdToDelete = $courseId;
-    //     $this->dispatchBrowserEvent('swal-confirm');
-    // }
+
     public function render()
     {
         $courses = Course::all();

@@ -11,7 +11,7 @@ class BatchGroup extends Model
         'teacher_id',
         'from',
         'to',
-        'session_id',
+        'session_year_id',
         'group_name',
         'is_completed',
     ];
@@ -21,18 +21,18 @@ class BatchGroup extends Model
         'to' => 'datetime:H:i',
         'is_completed' => 'boolean',
     ];
- // public function course()
-    // {
-    //     return $this->belongsTo(Course::class);
-    // }
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
 
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(User::class);
     }
 
-    // public function sessionYear()
-    // {
-    //     return $this->belongsTo(SessionYear::class);
-    // }
+    public function sessionYear()
+    {
+        return $this->belongsTo(CustomSession::class);
+    }
 }
