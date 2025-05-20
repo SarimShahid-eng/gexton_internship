@@ -2,7 +2,7 @@
     <div class="col-span-12 space-y-6 xl:col-span-12">
         <div
             class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-            <h5 class="flex justify-between items-center text-lg font-semibold">
+            <h5 class="flex justify-between items-center text-lg font-semibold dark:text-gray-200">
                 Create Teacher
 
                 <!-- Toggle Button -->

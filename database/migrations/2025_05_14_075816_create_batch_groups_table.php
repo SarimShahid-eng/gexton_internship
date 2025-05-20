@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('teacher_id')->nullable();
             $table->time('from')->nullable();
             $table->time('to')->nullable();
-            $table->bigInteger('session_id')->nullable();
+            $table->bigInteger('session_year_id')->nullable();
             $table->string('group_name', 50)->nullable();
             $table->integer('is_completed')->default(0);
             $table->timestamps();

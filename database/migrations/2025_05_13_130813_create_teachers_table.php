@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-<<<<<<<< HEAD:database/migrations/2025_05_13_130813_create_teachers_table.php
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
@@ -21,15 +20,8 @@ return new class extends Migration
             $table->string('session');
             $table->string('password');
             $table->string('status')->default('active');
-========
-        Schema::create('custom_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->string('session_year', 40)->nullable();
-            $table->dateTime('created_date')->nullable();
-            $table->tinyInteger('is_selected')->default(0);
->>>>>>>> a3bcbafc3562183d08e31e4f7a6df7c26270d606:database/migrations/2025_05_14_075857_create_custom_sessions_table.php
-            $table->timestamps();
-        });
+    });
+
     }
 
     /**
@@ -37,10 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-<<<<<<<< HEAD:database/migrations/2025_05_13_130813_create_teachers_table.php
         Schema::dropIfExists('teachers');
-========
-        Schema::dropIfExists('custom_sessions');
->>>>>>>> a3bcbafc3562183d08e31e4f7a6df7c26270d606:database/migrations/2025_05_14_075857_create_custom_sessions_table.php
+
     }
 };

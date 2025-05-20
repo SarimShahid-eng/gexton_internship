@@ -3,17 +3,19 @@
 namespace App\Livewire;
 
 use App\Models\Course;
-use App\Models\CustomSession;
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\CustomSession;
+use Livewire\WithoutUrlPagination;
 
 class CreateCourses extends Component
 {
-
+    use WithPagination;
+    protected $paginationTheme='tailwind';
     public $course_title, $course_description, $Duration, $created_date, $session_year_id, $test_time, $questions_limit, $hours, $minutes, $update_id, $courseIdToDelete;
-
     public function render()
     {
-        $courses = Course::all();
+        $courses = Course::paginate(4);
         return view('livewire.create-courses', compact('courses'));
     }
     public function save()
@@ -80,8 +82,7 @@ class CreateCourses extends Component
     }
     public function deleteCourse()
     {
-         Course::destroy($this->courseIdToDelete); // Find the course by ID
-
-            $this->dispatch('course-deleted', title: 'Deleted!', text: 'Course has been deleted successfully.', icon: 'success');
+        Course::destroy($this->courseIdToDelete);
+        $this->dispatch('course-deleted', title: 'Deleted!', text: 'Course has been deleted successfully.', icon: 'success');
     }
 }

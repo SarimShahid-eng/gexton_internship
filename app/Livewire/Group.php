@@ -2,40 +2,39 @@
 
 namespace App\Livewire;
 
-use App\Models\BatchGroup;
 use App\Models\Course;
+use App\Models\BatchGroup;
 use App\Models\CustomSession;
-use App\Models\Teacher ;
+use App\Models\Teacher;
 use App\Models\User;
 use Livewire\Component;
 
 class Group extends Component
 {
-    public $course_id, $teacher_id, $from, $to, $session_year_id, $group_name, $is_completed = 0 , $id;
+    public $course_id, $teacher_id, $from, $to, $session_id, $session_year_id, $group_name, $is_completed = 0, $id;
     public function render()
     {
-        $session_active = CustomSession::where('is_selected',1)->first();
+        $session_active = CustomSession::where('is_selected', 1)->first();
         $this->session_year_id = $session_active->id;
         $teachers = User::get();
         $courses = Course::get();
-        $batches = BatchGroup::with('teacher','sessionYear','course')->get();
-        return view('livewire.group', compact('teachers','batches', 'courses','session_active'));
+        $batches = BatchGroup::with('teacher', 'sessionYear', 'course')->get();
+        return view('livewire.group', compact('teachers', 'batches', 'courses', 'session_active'));
     }
     public function save()
     {
         // Validation rules
         $rules = [
             'course_id' => 'required',
-            'teacher_id' => 'required',
+            // 'teacher_id' => 'required',
             'from' => 'required|date_format:H:i',
             'to' => 'required|date_format:H:i',
             'session_year_id' => 'required',
             'group_name' => 'required|string|max:255',
         ];
-        // dd($this->all());
         // Validate the data
         $validatedData = $this->validate($rules);
-
+        $validatedData['teacher_id'] = 1;
         BatchGroup::updateOrCreate(
             ['id' => $this->id],
             $validatedData
@@ -48,7 +47,6 @@ class Group extends Component
             text: "Group has been $message successfully.",
             icon: 'success',
         );
-
     }
     public function edit($id)
     {
@@ -68,8 +66,8 @@ class Group extends Component
     }
     public function deleteCourse()
     {
-         BatchGroup::destroy($this->id); // Find the course by ID
+        BatchGroup::destroy($this->id); // Find the course by ID
 
-            $this->dispatch('course-deleted', title: 'Deleted!', text: 'Group has been deleted successfully.', icon: 'success');
+        $this->dispatch('course-deleted', title: 'Deleted!', text: 'Group has been deleted successfully.', icon: 'success');
     }
 }

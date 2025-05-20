@@ -1,9 +1,13 @@
+            @push('styles')
+                <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            @endpush
             <div x-data="{ showCourseForm: true }" class="grid grid-cols-12 gap-4 md:gap-6">
                 <div class="col-span-12 space-y-6 xl:col-span-12">
                     <div
                         class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
                         <h5 class="flex justify-between items-center text-lg font-semibold dark:text-gray-200">
-                            Create Courses
+                            Create Students
 
                             <!-- Toggle Button -->
                             <button @click="showCourseForm = !showCourseForm"
@@ -26,109 +30,128 @@
                                 x-transition:leave-end="opacity-0 scale-95" class="space-y-4 mt-4">
 
 
-                                <!-- Course Title -->
+
+                                <!--Student Related Info -->
+
+                                <div class="input-group">
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        Student Related Info
+                                    </label>
+                                    <div class="flex gap-4">
+                                        <!-- COURSE -->
+                                        <div class="w-1/3 relative z-20 bg-transparent">
+                                            <select id="selectedCourseId" wire:model.live="course_id" name="course_id"
+                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900"
+                                                id="courseSelect" data-width="100%">
+                                                <option value="">Select Course</option>
+                                                @foreach ($this->courses as $course)
+                                                    <option value="{{ $course->id }}">{{ $course->course_title }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('course_id')
+                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <!-- GROUP -->
+                                        <div class="w-1/3 relative z-20 bg-transparent">
+                                            <select wire:model="group_id" wire:change="setTeacher($event.target.value)"
+                                                name="group_id" id="groupSelect"
+                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900">
+                                                <option value="">Select Groups</option>
+                                                @foreach ($this->batchgroups as $group)
+                                                    <option value="{{ $group->id }}">{{ $group->group_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('group_id')
+                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <!-- TEACHER -->
+                                        <div class="w-1/3 relative z-20 bg-transparent">
+                                            <input type="text" placeholder="Enter Teacher Name"
+                                                wire:model="teacher_name" disabled
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                                            @error('teacher_name')
+                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        Email
+                                    </label>
+                                    <input type="text" placeholder="Enter Email" wire:model="email"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                                    @error('email')
+                                        <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Firstname -->
                                 <div class="input-group">
 
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Course Title
+                                        Firstname
                                     </label>
-                                    <input type="text" placeholder="Enter Title" wire:model="course_title"
+                                    <input type="text" placeholder="Enter Firstname" wire:model="firstname"
                                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                                    @error('course_title')
+                                    @error('firstname')
                                         <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <input type="hidden" wire:model="update_id">
-                                <!-- Course Description -->
+                                <!--Lastname -->
                                 <div class="input-group">
+
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Course Description
+                                        Lastname
                                     </label>
-                                    <textarea placeholder="Enter a description..." rows="6" wire:model="course_description"
-                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"></textarea>
-                                    @error('course_description')
+                                    <input type="text" placeholder="Enter Lastname" wire:model="lastname"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                                    @error('lastname')
                                         <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                <!-- Selects Row -->
                                 <div class="input-group">
+
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Duration Entry Test Time
+                                        Phone number
                                     </label>
-                                    <div class="flex gap-4">
+                                    <input type="text" placeholder="Enter Phone number" wire:model="phone"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                                    @error('phone')
+                                        <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <!--Password -->
+                                <div class="input-group">
 
-                                        <div class="w-1/3 relative z-20 bg-transparent">
-                                            <select :class="selected && 'text-gray-800 dark:text-white/90'"
-                                                wire:model="hours"
-                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900"
-                                                @change="index === 0 ? selected1 = true : index === 1 ? selected2 = true : selected3 = true">
-                                                <option value="">Select Hours</option>
-                                                @foreach (range(0, 12) as $hour)
-                                                    <option value="{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}">
-                                                        {{ $hour }}
-                                                        {{ $hour == 1 || $hour == 0 ? 'Hour' : 'Hours' }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('hours')
-                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="w-1/3 relative z-20 bg-transparent">
-                                            <select :class="selected && 'text-gray-800 dark:text-white/90'"
-                                                wire:model="minutes"
-                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900"
-                                                @change="index === 0 ? selected1 = true : index === 1 ? selected2 = true : selected3 = true">
-                                                <option value="">Select Minutes</option>
-                                                @foreach (range(1, 60) as $minute)
-                                                    <option value="{{ str_pad($minute, 2, '0', STR_PAD_LEFT) }}">
-                                                        {{ $minute }} {{ $minute == 1 ? 'Minute' : 'Minutes' }}
-                                                    </option>
-                                                @endforeach
-
-                                            </select>
-                                            @error('minutes')
-                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="w-1/3 relative z-20 bg-transparent">
-                                            <input type="number" placeholder="Enter Questions limit"
-                                                wire:model="questions_limit"
-                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                                            @error('questions_limit')
-                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                    </div>
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        Password
+                                    </label>
+                                    <input type="text" placeholder="Enter Password" wire:model="password"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                                    @error('password')
+                                        <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="input-group">
+
                                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Duration
+                                        Confirm Password
                                     </label>
-                                    <div class="flex gap-4">
-
-                                        <div class="w-1/3 relative z-20 bg-transparent">
-                                            <select :class="selected && 'text-gray-800 dark:text-white/90'"
-                                                wire:model="Duration"
-                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900">
-                                                <option value="">Select Weeks</option>
-                                                @foreach (range(1, 48) as $week)
-                                                    <option
-                                                        value="{{ $week == 1 ? $week . ' ' . 'Week' : $week . ' ' . 'Weeks' }}">
-                                                        {{ $week }}
-                                                        {{ $week == 1 ? 'Week' : 'Weeks' }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('Duration')
-                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-
-                                    </div>
+                                    <input type="text" placeholder="Confirm Password"
+                                        wire:model="password_confirmation"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                                    @error('password_confirmation')
+                                        <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <!-- Submit Button -->
@@ -152,7 +175,7 @@
                         <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                                    See All Courses
+                                    See All Students
                                 </h3>
                             </div>
 
@@ -173,24 +196,26 @@
                                         <th class="py-3">
                                             <div class="flex items-center">
                                                 <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                    Course Title
+                                                    Full Name
+                                                </p>
+                                            </div>
+                                        </th>
+
+                                        <th class="py-3">
+                                            <div class="flex items-center">
+                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                                    Course
                                                 </p>
                                             </div>
                                         </th class="py-3">
                                         <th class="py-3">
                                             <div class="flex items-center">
                                                 <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                    Duration Test Time
+                                                    Group
                                                 </p>
                                             </div>
                                         </th>
-                                        <th class="py-3">
-                                            <div class="flex items-center col-span-2">
-                                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                    Duration
-                                                </p>
-                                            </div>
-                                        </th>
+
                                         <th class="py-3">
                                             <div class="flex items-center col-span-2">
                                                 <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
@@ -205,7 +230,7 @@
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
 
 
-                                    @forelse ($courses as $course)
+                                    @forelse ($students as $student)
                                         <tr>
                                             <td class="py-3">
                                                 <div class="flex items-center">
@@ -217,14 +242,14 @@
                                             <td class="py-3">
                                                 <div class="flex items-center">
                                                     <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                        {{ $course->course_title }}
+                                                        {{ $student->firstname }} {{ $student->lastname }}
                                                     </p>
                                                 </div>
                                             </td>
                                             <td class="py-3">
                                                 <div class="flex items-center">
                                                     <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                        {{ $course->test_time }}
+                                                        {{ $student->student_details->course->course_title }}
 
                                                     </p>
                                                 </div>
@@ -232,15 +257,16 @@
                                             <td class="py-3">
                                                 <div class="flex items-center">
                                                     <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                        {{ $course->Duration }}
+                                                        {{ $student->student_details->group->group_name }}
+
                                                     </p>
                                                 </div>
                                             </td>
 
                                             <td class="py-3">
                                                 <div class="flex items-center gap-2">
-                                                    <button wire:click="edit({{ $course->id }})"
-                                                        @click="showCourseForm = true"
+                                                    <button wire:click="edit({{ $student->id }})"
+                                                        @click="showstudentForm = true"
                                                         class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600"
                                                         title="Edit">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1"
@@ -251,7 +277,7 @@
                                                         </svg>
                                                     </button>
 
-                                                    <button wire:click="confirmDelete({{ $course->id }})"
+                                                    {{-- <button wire:click="confirmDelete({{ $student->id }})"
                                                         class="inline-flex items-center text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
                                                         title="Delete">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -262,7 +288,7 @@
                                                         </svg>
 
 
-                                                    </button>
+                                                    </button> --}}
                                                 </div>
                                             </td>
                                         @empty
@@ -276,17 +302,16 @@
                                                     </svg>
                                                     <h3
                                                         class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                                        No courses
+                                                        No Students
                                                         records found</h3>
                                             </td>
                         </div>
                         </tr>
                         @endforelse
-
-                        <div x-data="{ open: false }" x-init="window.addEventListener('swal-confirm', () => {
+                        {{-- <div x-data="{ open: false }" x-init="window.addEventListener('swal-confirm', () => {
                             Swal.fire({
                                 title: 'Are you sure?',
-                                text: 'Do you really want to delete this course?',
+                                text: 'Do you really want to delete this student?',
                                 icon: 'warning',
                                 showCancelButton: true,
 
@@ -299,16 +324,17 @@
                                 }
                             });
                         })">
-                        </div>
+                        </div> --}}
                         </tbody>
                         </table>
-                        {{ $courses->links() }}
                     </div>
                 </div>
 
                 @push('script')
+                    <!-- Bottom of body -->
+                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
                     <script>
-                        window.addEventListener('course-saved', event => {
+                        window.addEventListener('student-saved', event => {
                             let data = event.detail;
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -327,25 +353,7 @@
                             });
 
                         });
-                        window.addEventListener('course-deleted', event => {
-                            let data = event.detail;
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: "top-end",
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.onmouseenter = Swal.stopTimer;
-                                    toast.onmouseleave = Swal.resumeTimer;
-                                }
-                            })
-                            Toast.fire({
-                                icon: "success",
-                                title: data.text
-                            });
 
-                        });
                     </script>
                 @endpush
 

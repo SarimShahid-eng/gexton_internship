@@ -10,11 +10,12 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>
-      eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
+      Gexton Internship Portal
     </title>
     @livewireStyles
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    @stack('styles')
     <style>
         .swal2-container{
             z-index:100000000 !important;
