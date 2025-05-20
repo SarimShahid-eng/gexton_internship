@@ -1,4 +1,4 @@
-            <div x-data="{ showCourseForm: true }" class="grid grid-cols-12 gap-4 md:gap-6">
+            <div x-data="{ showCourseForm: false }" class="grid grid-cols-12 gap-4 md:gap-6">
                 <div class="col-span-12 space-y-6 xl:col-span-12">
                     <div
                         class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">

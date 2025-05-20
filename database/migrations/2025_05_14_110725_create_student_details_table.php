@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('group_id')->constrained('batch_groups')->cascadeOnDelete();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
+            $table->boolean('entry_test')->default(false);
             $table->date('suspend_date')->nullable();
             $table->text('reason_suspend')->nullable();
             $table->enum('is_completed', ['0', '1'])->default('0');

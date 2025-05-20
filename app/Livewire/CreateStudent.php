@@ -9,9 +9,11 @@ use App\Models\BatchGroup;
 use App\Models\CustomSession;
 use App\Models\StudentDetail;
 use Livewire\Attributes\Computed;
+use Livewire\WithPagination;
 
 class CreateStudent extends Component
 {
+    use WithPagination;
     public $course_id;
     public $teacher_name;
     public $group_id, $email, $firstname, $lastname, $phone, $password, $password_confirmation, $update_id;
@@ -110,10 +112,9 @@ class CreateStudent extends Component
     public function render()
     {
         $students = User::with('student_details', 'student_details.course:id,course_title', 'student_details.group:id,group_name')->where('user_type', 'student')
-        ->where('user_type','student')
-        ->select('id', 'firstname', 'lastname')
-            ->get();
-            // dd($students);
+            ->where('user_type', 'student')
+            ->select('id', 'firstname', 'lastname')
+            ->paginate(10);
         return view('livewire.create-student', compact('students'));
     }
 }

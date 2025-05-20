@@ -18,6 +18,21 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('role', function ($role) {
             return Auth::user()->hasRole($role);
         });
+        Blade::if('studentPassed', function () {
+            $user = auth()->user();
+            return $user
+                && $user->user_type === 'student'
+                && $user->student_details
+                && $user->student_details->result === 'pass';
+        });
+        // For students who are in progress
+        Blade::if('studentInProgress', function () {
+            $user = auth()->user();
+            return $user
+                && $user->user_type === 'student'
+                && $user->student_details
+                && $user->student_details->result === 'In_progress';
+        });
     }
 
     /**

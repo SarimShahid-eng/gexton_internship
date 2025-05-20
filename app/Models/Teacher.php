@@ -10,9 +10,10 @@ class Teacher extends Model
         'first_name',
         'last_name',
         'email',
-        'phone',
-        'session',
         'password',
+        'phone',
+        'user_type',
+        'session_year_id',
     ];
 
     protected $hidden = [

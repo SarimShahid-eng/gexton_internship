@@ -102,6 +102,7 @@ layer(base);
   --color-orange-800: #9c2a10;
   --color-orange-900: #7e2410;
   --color-orange-950: #511c10;
+  --color-orange-custom: #ff7810;
 
   --color-success-25: #f6fef9;
   --color-success-50: #ecfdf3;
@@ -141,6 +142,7 @@ layer(base);
   --color-warning-800: #93370d;
   --color-warning-900: #7a2e0e;
   --color-warning-950: #4e1d09;
+  /* --color-custom-100: #ff7810; */
 
   --color-theme-pink-500: #ee46bc;
 

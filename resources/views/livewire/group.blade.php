@@ -2,7 +2,7 @@
     <div class="col-span-12 space-y-6 xl:col-span-12">
         <div
             class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-            <h5 class="flex justify-between items-center text-lg font-semibold">
+            <h5 class="flex justify-between items-center text-lg font-semibold dark:text-gray-200">
                 Create Groups
 
                 <!-- Toggle Button -->
@@ -31,8 +31,8 @@
                         </label>
                         <select wire:model="course_id"
                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        dark:border-gray-700 dark:bg-dark-900 dark:text-white/90">
-                            <option value="">Select Course</option>
+           dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-400">
+                            <option value="" disabled selected>Select Course</option>
                             @foreach ($courses as $course)
                                 <option value="{{ $course->id }}">{{ $course->course_title }}</option>
                             @endforeach
@@ -46,7 +46,7 @@
                         </label>
                         <select wire:model="teacher_id"
                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        dark:border-gray-700 dark:bg-dark-900 dark:text-white/90">
+         dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-400">
                             <option value="">Select Teacher</option>
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->id }}">{{ $teacher->firstname }} {{ $teacher->lastname }}
@@ -301,6 +301,9 @@
             </div>
             </tbody>
             </table>
+            <div class="mt-3">
+                {{ $batches->links() }}
+            </div>
         </div>
     </div>
 

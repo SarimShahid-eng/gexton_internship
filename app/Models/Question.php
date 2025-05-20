@@ -12,15 +12,17 @@ class Question extends Model
         'session_id',
         'question',
         'correct_answer',
-        'marks',
-        'options',
-        'images',
-        'description',
-        'desc_images',
-        'video_link',
-        'is_publish',
+        'options'
+        // 'marks',
+        // 'images',
+        // 'description',
+        // 'desc_images',
+        // 'video_link',
+        // 'is_publish',
     ];
-    function course() {
+
+    function course()
+    {
         return $this->belongsTo(Course::class, 'course_id');
     }
     function session() {

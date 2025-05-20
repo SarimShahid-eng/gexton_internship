@@ -2,23 +2,24 @@
 
 namespace App\Livewire;
 
-use App\Models\CustomSession;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\CustomSession;
 use Illuminate\Support\Facades\Crypt;
 
 
 class Teacher extends Component
 {
+    use WithPagination;
     public $firstname, $lastname, $email, $phone, $session_year_id, $password, $is_active, $id;
-
-
 
     public function render()
     {
+        // dd('ss');
         $session_active = CustomSession::where('is_selected',1)->first();
         $this->session_year_id = $session_active->id;
-        $teachers = User::with('session')->where('session_year_id',$session_active->id)->get();
+        $teachers = User::with('session')->where('session_year_id',$session_active->id)->paginate(10);
         return view('livewire.teacher', compact('teachers','session_active'));
     }
     public function save()
@@ -31,7 +32,6 @@ class Teacher extends Component
             'session_year_id' => 'required|integer',
             'is_active' => 'required',
         ];
-        // dd($this->all());
         // If updating, ignore unique check for current record
         if ($this->id) {
             $rules['email'] = 'required|email|unique:users,email,' . $this->id;
@@ -39,7 +39,6 @@ class Teacher extends Component
         }
 
         $validatedData = $this->validate($rules);
-        // dd($validatedData);
         // Encrypt password if provided
         if ($this->password) {
             $validatedData['password'] = Crypt::encrypt($this->password);

@@ -12,6 +12,7 @@
     <title>
       Gexton Internship Portal
     </title>
+      <link rel="icon" href="{{ asset('assets/logo/fav_icon.png') }}" type="image/png" />
     @livewireStyles
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

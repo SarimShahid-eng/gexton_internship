@@ -22,9 +22,23 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::user();
 
-            return redirect()->intended('dashboard');
+            if ($user->user_type === "student") {
+                if ($user->student_details && $user->student_details->result === 'pass') {
+                    return to_route('upload_task');
+                } elseif ($user->student_details && $user->student_details->result == 'In_progress') {
+                    return to_route('entry_test');
+                }
+            } elseif ($user->user_type === 'admin') {
+                return redirect()->intended('dashboard');
+            }
         }
+
+        // elseif($user->user_type === 'student' && $user->student_details->result == 'pass'){
+        //     return to_route('upload_task');
+        // }
+        // dd('ss');
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

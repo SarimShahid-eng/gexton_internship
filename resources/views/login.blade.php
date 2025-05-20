@@ -12,9 +12,9 @@
 <body x-data="{ page: 'comingSoon', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }">
 
-<!-- ===== Preloader Start ===== -->
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <!-- ===== Preloader Start ===== -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     @include('partials.preloader')
     {{-- <include src="./partials/preloader.html"></include> --}}
     <!-- ===== Preloader End ===== -->
@@ -47,19 +47,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             </p>
                         </div>
                         <div>
-                            @if($errors->any())
-                            <div>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-
-                                    <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif
 
                             <form method="POST" action="{{ route('login.attempt') }}">
-                              @csrf
+                                @csrf
                                 <div class="space-y-5">
                                     <!-- Email -->
                                     <div>
@@ -69,6 +59,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         </label>
                                         <input type="email" id="email" name="email" placeholder="info@gmail.com"
                                             class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+                                        @error('email')
+                                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <!-- Password -->
                                     <div>
@@ -97,7 +90,11 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                                         fill="#98A2B3" />
                                                 </svg>
                                             </span>
+
                                         </div>
+                                        @error('password')
+                                            <p class="text-red-500 ms-2 mt-1">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <!-- Checkbox -->
                                     {{-- <div class="flex items-center justify-between">
@@ -148,9 +145,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     <include src="./partials/common-grid-shape.html"></include>
                     <div class="flex flex-col items-center max-w-xs">
                         <a href="index.html" class="block mb-4">
-                        <h4 class="text-[32px] text-white text-center">
-                            Welcome to Gexton Internship Portal
-                        </h4>
+                            <h4 class="text-[32px] text-white text-center">
+                                Welcome to Gexton Internship Portal
+                            </h4>
                             {{-- <img src="{{ asset('assets/logo/Gexton_student _portal_logo.png') }}" alt="Logo" /> --}}
                         </a>
                         {{-- <p class="text-center text-gray-400 dark:text-white/60">

@@ -2,15 +2,18 @@
 
 namespace App\Livewire;
 
-use App\Models\Course;
-use App\Models\BatchGroup;
-use App\Models\CustomSession;
-use App\Models\Teacher;
 use App\Models\User;
+use App\Models\Course;
+use App\Models\Teacher;
 use Livewire\Component;
+use App\Models\BatchGroup;
+use Livewire\WithPagination;
+use App\Models\CustomSession;
 
 class Group extends Component
 {
+    use WithPagination;
+
     public $course_id, $teacher_id, $from, $to, $session_id, $session_year_id, $group_name, $is_completed = 0, $id;
     public function render()
     {
@@ -18,7 +21,7 @@ class Group extends Component
         $this->session_year_id = $session_active->id;
         $teachers = User::get();
         $courses = Course::get();
-        $batches = BatchGroup::with('teacher', 'sessionYear', 'course')->get();
+        $batches = BatchGroup::with('teacher', 'sessionYear', 'course')->paginate(10);
         return view('livewire.group', compact('teachers', 'batches', 'courses', 'session_active'));
     }
     public function save()

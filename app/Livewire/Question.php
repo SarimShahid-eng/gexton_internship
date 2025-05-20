@@ -9,13 +9,11 @@ class Question extends Component
 
     public function render()
     {
-        $questions = DataQuestion::with(['course', 'session'])->get();
-        // dd($questions);
+        $questions = DataQuestion::with(['course'])->get();
         return view('livewire.question', compact('questions'));
     }
     public function save()
     {
-        // dd($this->all());
         $rules = [
             'title' => 'required|string|max:255',
             'course_id' => 'required|integer',
@@ -23,10 +21,9 @@ class Question extends Component
             'question' => 'required|string',
             'correct_answer' => 'required',
         ];
-
         $validatedData = $this->validate($rules);
-        $validatedData['options'] = json_encode($this->options);
-        // dd($validatedData);
+        // $validatedData['options'] = json_encode($this->options);
+        $validatedData['options'] = serialize($this->options);
 
         DataQuestion::updateOrCreate(
             ['id' => $this->id],
@@ -54,9 +51,9 @@ class Question extends Component
         $this->options = $question->options;
         $this->id = $id;
 
-        // Dispatch browser event with options and correct answer datas
         $this->dispatch('edit-question-loaded',
-            options : json_decode($this->options),
+            // options : json_decode($this->options),
+            options : unserialize($this->options),
             correct_answer : $this->correct_answer,
         );
     }

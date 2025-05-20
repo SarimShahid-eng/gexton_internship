@@ -54,6 +54,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(StudentDetail::class, 'user_id');
     }
+    public function session()
+    {
+        return $this->belongsTo(CustomSession::class,'session_year_id');
+    }
     public function hasRole($role)
     {
         return $this->user_type === $role;

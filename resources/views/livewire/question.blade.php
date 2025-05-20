@@ -55,51 +55,7 @@
                             class="h-32 w-full rounded-lg border px-4 py-2.5 text-sm"></textarea>
                     </div>
 
-                    {{-- <!-- Hidden Fields for Alpine Sync -->
-                    <input type="hidden" x-ref="optionsInput" wire:model.defer="options" />
-                    <input type="hidden" x-ref="correctInput" wire:model.defer="correct_answer" /> --}}
 
-                    <!-- Answer Options -->
-                    {{-- <div class="w-full p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-                        <div class="space-y-6">
-                            <div class="flex items-center justify-between">
-                                <label class="text-base font-semibold text-gray-800 dark:text-gray-200">Add your
-                                    options</label>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">Mark one as correct</span>
-                            </div>
-
-                            <template x-for="(answer, index) in options" :key="index">
-                                <div class="group relative flex items-center gap-4 mb-4 p-3 border rounded-lg">
-                                    <div class="flex-1">
-                                        <input type="text" x-model.debounce.300ms="options[index]"
-                                            @input.debounce.300ms="updateLivewire()" placeholder="Enter answer option"
-                                            class="w-full px-4 py-3 rounded-lg border" />
-                                    </div>
-
-                                    <div class="flex items-center gap-2 px-3">
-                                        <input type="radio" :value="index" x-model="correct_answer"
-                                            @change="updateLivewire()" class="h-5 w-5 text-blue-600 cursor-pointer" />
-                                        <span class="text-sm font-medium text-gray-700">Correct</span>
-                                    </div>
-
-                                    <button type="button" @click="removeOption(index)" x-show="options.length > 1"
-                                        class="text-red-500 hover:bg-gray-100 rounded-full p-1.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor" class="h-5 w-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </template>
-
-                            <button type="button" @click="addOption()"
-                                class="mt-4 px-4 py-2.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100">
-                                + Add Another Answer
-                            </button>
-                        </div>
-                    </div> --}}
-                    {{-- <div x-data="questionFormComponent()" x-on:edit-question-loaded.window="loadQuestion($event.detail)"> --}}
                     <div x-data="{
                         options: [],
                         correct_answer: '',
@@ -248,7 +204,7 @@
                                 </td>
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{ $question->session->session_year }}
+                                        {{ $question->session_id }}
                                     </p>
                                 </td>
                                 <td class="py-3">

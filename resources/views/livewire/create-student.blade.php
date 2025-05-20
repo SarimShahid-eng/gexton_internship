@@ -2,7 +2,7 @@
                 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             @endpush
-            <div x-data="{ showCourseForm: true }" class="grid grid-cols-12 gap-4 md:gap-6">
+            <div x-data="{ showstudentForm: false }" class="grid grid-cols-12 gap-4 md:gap-6">
                 <div class="col-span-12 space-y-6 xl:col-span-12">
                     <div
                         class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
@@ -10,7 +10,7 @@
                             Create Students
 
                             <!-- Toggle Button -->
-                            <button @click="showCourseForm = !showCourseForm"
+                            <button @click="showstudentForm = !showstudentForm"
                                 class="transition-transform hover:rotate-90">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -22,7 +22,7 @@
                         <!-- Form Section -->
                         <form wire:submit.prevent="save">
                             @csrf
-                            <div x-show="showCourseForm" x-transition:enter="transition ease-out duration-300"
+                            <div x-show="showstudentForm" x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 scale-95"
                                 x-transition:enter-end="opacity-100 scale-100"
                                 x-transition:leave="transition ease-in duration-200"
@@ -308,6 +308,7 @@
                         </div>
                         </tr>
                         @endforelse
+
                         {{-- <div x-data="{ open: false }" x-init="window.addEventListener('swal-confirm', () => {
                             Swal.fire({
                                 title: 'Are you sure?',
@@ -327,6 +328,9 @@
                         </div> --}}
                         </tbody>
                         </table>
+                         <div class="mt-3">
+                            {{ $students->links() }}
+                        </div>
                     </div>
                 </div>
 
@@ -353,7 +357,6 @@
                             });
 
                         });
-
                     </script>
                 @endpush
 
