@@ -15,18 +15,19 @@ class Question extends Component
     }
     public function save()
     {
-        dd($this->all());
+        // dd($this->all());
         $rules = [
             'title' => 'required|string|max:255',
             'course_id' => 'required|integer',
             'session_id' => 'required|integer',
             'question' => 'required|string',
-            'correct_answer' => 'required|string',
+            'correct_answer' => 'required',
         ];
 
-        // dd($validatedData);
         $validatedData = $this->validate($rules);
         $validatedData['options'] = json_encode($this->options);
+        // dd($validatedData);
+
         DataQuestion::updateOrCreate(
             ['id' => $this->id],
             $validatedData
@@ -50,14 +51,14 @@ class Question extends Component
         $this->title = $question->title;
         $this->question = $question->question;
         $this->correct_answer = $question->correct_answer;
-        $this->options = json_decode($question->options, true);
+        $this->options = $question->options;
         $this->id = $id;
 
         // Dispatch browser event with options and correct answer datas
-        $this->dispatch('edit-question-loaded', [
-            'options' => $this->options,
-            'correct_answer' => $this->correct_answer,
-        ]);
+        $this->dispatch('edit-question-loaded',
+            options : json_decode($this->options),
+            correct_answer : $this->correct_answer,
+        );
     }
 
 }
