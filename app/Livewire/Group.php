@@ -19,7 +19,7 @@ class Group extends Component
     {
         $session_active = CustomSession::where('is_selected', 1)->first();
         $this->session_year_id = $session_active->id;
-        $teachers = User::get();
+        $teachers = User::where('user_type','teacher')->get();
         $courses = Course::get();
         $batches = BatchGroup::with('teacher', 'sessionYear', 'course')->paginate(10);
         return view('livewire.group', compact('teachers', 'batches', 'courses', 'session_active'));
@@ -29,7 +29,7 @@ class Group extends Component
         // Validation rules
         $rules = [
             'course_id' => 'required',
-            // 'teacher_id' => 'required',
+            'teacher_id' => 'required',
             'from' => 'required|date_format:H:i',
             'to' => 'required|date_format:H:i',
             'session_year_id' => 'required',
@@ -37,7 +37,6 @@ class Group extends Component
         ];
         // Validate the data
         $validatedData = $this->validate($rules);
-        $validatedData['teacher_id'] = 1;
         BatchGroup::updateOrCreate(
             ['id' => $this->id],
             $validatedData

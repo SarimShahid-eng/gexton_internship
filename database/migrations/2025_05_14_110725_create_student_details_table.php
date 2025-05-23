@@ -17,12 +17,13 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('group_id')->constrained('batch_groups')->cascadeOnDelete();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
-            $table->boolean('entry_test')->default(false);
+            $table->enum('entry_test', ['0', '1'])->default('0');
+            $table->enum('test_started', ['0', '1'])->default('0');
             $table->date('suspend_date')->nullable();
             $table->text('reason_suspend')->nullable();
-            $table->enum('is_completed', ['0', '1'])->default('0');
+            $table->enum('timer_started', ['0', '1'])->default('0');
             $table->enum('result', ['In_progress', 'pass', 'fail'])->default('In_progress');
-            $table->unsignedBigInteger('test_countdown')->default(0);
+            $table->time('test_countdown')->default('00:00:00');
 
             $table->timestamps();
         });

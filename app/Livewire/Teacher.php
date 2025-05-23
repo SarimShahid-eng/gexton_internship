@@ -16,10 +16,11 @@ class Teacher extends Component
 
     public function render()
     {
-        // dd('ss');
         $session_active = CustomSession::where('is_selected',1)->first();
         $this->session_year_id = $session_active->id;
-        $teachers = User::with('session')->where('session_year_id',$session_active->id)->paginate(10);
+        $teachers = User::with('session')->where('session_year_id',$session_active->id)
+        ->where('user_type','teacher')
+        ->paginate(10);
         return view('livewire.teacher', compact('teachers','session_active'));
     }
     public function save()
@@ -38,8 +39,9 @@ class Teacher extends Component
             $rules['phone'] = 'required|unique:users,phone,' . $this->id;
         }
 
+
         $validatedData = $this->validate($rules);
-        // Encrypt password if provided
+        $validatedData['user_type']='teacher';
         if ($this->password) {
             $validatedData['password'] = Crypt::encrypt($this->password);
         }
@@ -70,7 +72,6 @@ class Teacher extends Component
         $this->email = $teacher->email;
         $this->phone = $teacher->phone;
         $this->session_year_id = $teacher->session_year_id;
-        // $this->password = $password;
         $this->is_active = $teacher->is_active;
         $this->id = $teacher->id;
     }

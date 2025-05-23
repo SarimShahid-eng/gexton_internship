@@ -15,8 +15,10 @@ class CreateCourses extends Component
     public $course_title, $course_description, $Duration, $created_date, $session_year_id, $test_time, $questions_limit, $hours, $minutes, $update_id, $courseIdToDelete;
     public function render()
     {
+          $session_active = CustomSession::where('is_selected', 1)->first();
+        $this->session_year_id = $session_active->id;
         $courses = Course::paginate(10);
-        return view('livewire.create-courses', compact('courses'));
+        return view('livewire.create-courses', compact('courses','session_active'));
     }
     public function save()
     {
@@ -27,7 +29,7 @@ class CreateCourses extends Component
             'minutes' => 'required',
             'Duration' => 'required',
             'created_date' => 'nullable',
-            'session_year_id' => 'nullable',
+            'session_year_id' => 'required',
             'test_time' => 'nullable',
             'questions_limit' => 'required',
         ]);
@@ -35,7 +37,7 @@ class CreateCourses extends Component
         $formTestTime = $this->hours . ':' . $this->minutes . ':00';
         $validated['test_time'] = $formTestTime;
         $session_id = CustomSession::latest()->first();
-        $validated['session_year_id'] = $session_id->id;
+        // $validated['session_year_id'] = $session_id->id;
         $validated['created_date'] = now();
         Course::updateOrCreate(
             ['id' => $this->update_id],

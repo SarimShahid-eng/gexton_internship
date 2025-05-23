@@ -153,7 +153,36 @@
                                         <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
                                     @enderror
                                 </div>
-
+                                <!-- Status -->
+                                <div class="input-group">
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        Status
+                                    </label>
+                                    <select wire:model="is_active"
+                                        class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                                shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10
+                                                dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800
+                                                dark:bg-dark-900">
+                                        <option value="">Select Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                    @error('is_active')
+                                        <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <!-- Session -->
+                                <div class="input-group">
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        Session
+                                    </label>
+                                    <input type="text" disabled value="{{ $session_active->session_year }}"
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
+                                            h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                            placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                            dark:placeholder:text-white/30" />
+                                    <input type="hidden" wire:model="session_year_id" />
+                                </div>
                                 <!-- Submit Button -->
                                 <div>
                                     <button wire:loading.attr="disabled" wire:target="save" type="submit"
@@ -228,8 +257,6 @@
                                 <!-- table header end -->
 
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-
-
                                     @forelse ($students as $student)
                                         <tr>
                                             <td class="py-3">
@@ -305,8 +332,9 @@
                                                         No Students
                                                         records found</h3>
                                             </td>
-                        </div>
-                        </tr>
+                                    </div>
+                                    </tr>
+                                </tbody>
                         @endforelse
 
                         {{-- <div x-data="{ open: false }" x-init="window.addEventListener('swal-confirm', () => {
@@ -328,7 +356,7 @@
                         </div> --}}
                         </tbody>
                         </table>
-                         <div class="mt-3">
+                        <div class="mt-3">
                             {{ $students->links() }}
                         </div>
                     </div>

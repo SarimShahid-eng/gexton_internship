@@ -16,8 +16,7 @@ class CreateStudent extends Component
     use WithPagination;
     public $course_id;
     public $teacher_name;
-    public $group_id, $email, $firstname, $lastname, $phone, $password, $password_confirmation, $update_id;
-
+    public $group_id, $email, $firstname, $lastname, $phone, $password, $is_active, $password_confirmation, $update_id, $session_year_id;
     #[Computed()]
     public function courses()
     {
@@ -50,13 +49,14 @@ class CreateStudent extends Component
                 'lastname' => 'required',
                 'phone' => 'required',
                 'password' => $this->update_id ? 'nullable' : 'required|confirmed',
+                'session_year_id' => 'required',
+                'is_active' => 'required',
             ],
             [
                 'course_id.required' => 'course field is required',
                 'group_id' => 'group field is required'
             ]
         );
-        $session_id = CustomSession::latest()->first();
         $userData = [
             'firstname' => $validated['firstname'],
             'lastname' => $validated['lastname'],
@@ -64,7 +64,9 @@ class CreateStudent extends Component
             'email' => $validated['email'],
             'password' => $validated['password'],
             'user_type' => 'student',
-            'session_year_id' => $session_id->id
+            'session_year_id' => $validated['session_year_id'],
+            'is_active' => $validated['is_active'],
+
         ];
         if ($this->update_id && !$this->password) {
             unset($userData['password']);
@@ -98,7 +100,7 @@ class CreateStudent extends Component
     public function edit($id)
     {
         $student = User::with('student_details', 'student_details.course:id,course_title', 'student_details.teacher:id,firstname,lastname', 'student_details.group:id,group_name')->where('user_type', 'student')
-            ->select('id', 'firstname', 'lastname', 'email', 'phone')
+            ->select('id', 'firstname', 'lastname', 'email', 'phone', 'is_active')
             ->find($id);
         $this->course_id = $student->student_details->course_id;
         $this->group_id = $student->student_details->group_id;
@@ -106,15 +108,19 @@ class CreateStudent extends Component
         $this->firstname = $student->firstname;
         $this->lastname = $student->lastname;
         $this->phone = $student->phone;
+        $this->is_active = $student->is_active;
         $this->update_id = $student->id;
         $this->setTeacher($this->group_id);
     }
+
     public function render()
     {
+        $session_active = CustomSession::where('is_selected', 1)->first();
+        $this->session_year_id = $session_active->id;
         $students = User::with('student_details', 'student_details.course:id,course_title', 'student_details.group:id,group_name')->where('user_type', 'student')
             ->where('user_type', 'student')
             ->select('id', 'firstname', 'lastname')
             ->paginate(10);
-        return view('livewire.create-student', compact('students'));
+        return view('livewire.create-student', compact('students', 'session_active'));
     }
 }

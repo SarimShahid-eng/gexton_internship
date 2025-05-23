@@ -5,6 +5,7 @@ use App\Models\Question as DataQuestion;
 use Livewire\Component;
 class Question extends Component
 {
+    // public array $options = [''];;
     public $course_id, $session_id, $title, $question, $id, $options = [], $correct_answer;
 
     public function render()
@@ -50,9 +51,7 @@ class Question extends Component
         $this->correct_answer = $question->correct_answer;
         $this->options = $question->options;
         $this->id = $id;
-
         $this->dispatch('edit-question-loaded',
-            // options : json_decode($this->options),
             options : unserialize($this->options),
             correct_answer : $this->correct_answer,
         );

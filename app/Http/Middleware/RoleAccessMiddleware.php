@@ -20,13 +20,10 @@ class RoleAccessMiddleware
         if ($user->user_type !== $role) {
             return abort(404);
         }
-        //  elseif ($user->user_type === 'student' && $user->student_details->result=='In_progress' && !$user->student_details->entry_test ) {
-        // //   dd('its a non passed');
-        //     // return to_route('entry_test');
-        // } elseif ($user->user_type === 'teacher') {
-        //     dd('s');
-        //     // return to_route();
-        // }
+        if(!$user->is_active){
+            Auth::logout();
+            return to_route('login');
+        }
         return $next($request);
     }
 }

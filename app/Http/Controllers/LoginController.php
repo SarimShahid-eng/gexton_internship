@@ -35,11 +35,6 @@ class LoginController extends Controller
             }
         }
 
-        // elseif($user->user_type === 'student' && $user->student_details->result == 'pass'){
-        //     return to_route('upload_task');
-        // }
-        // dd('ss');
-
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');

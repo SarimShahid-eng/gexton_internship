@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('is_active',[0,1])->default(1);
+            $table->enum('is_active',['0','1'])->default('0');
             $table->enum('user_type', ['admin', 'teacher', 'student']);
            $table->foreignId('session_year_id')->nullable()->constrained('custom_sessions')->nullOnDelete();
             $table->rememberToken();

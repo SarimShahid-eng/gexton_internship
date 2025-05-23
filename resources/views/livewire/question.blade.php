@@ -12,15 +12,7 @@
                     </svg>
                 </button>
             </h5>
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+
             <form wire:submit.prevent="save">
                 <div x-show="showCourseForm" x-transition class="space-y-4 mt-4">
                     <!-- Course Select -->
@@ -72,14 +64,20 @@
                             $wire.set('correct_answer', this.correct_answer);
                         },
                         loadQuestion(data) {
-                            // Handle stringified array
                             if (typeof data.options === 'string') {
                                 this.options = JSON.parse(data.options);
                             } else {
-                                this.options = data.options || [''];
+                                this.options = data.options || [];
                             }
-
                             this.correct_answer = data.correct_answer || '';
+                            this.updateLivewire();
+                        },
+                        addOption() {
+                            this.options.push('');
+                            this.updateLivewire();
+                        },
+                        removeOption(index) {
+                            this.options.splice(index, 1);
                             this.updateLivewire();
                         }
                     }" x-init="window.addEventListener('edit-question-loaded', event => {

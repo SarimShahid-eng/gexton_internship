@@ -15,11 +15,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // dd(Auth::user());
         Blade::if('role', function ($role) {
             return Auth::user()->hasRole($role);
         });
         Blade::if('studentPassed', function () {
             $user = auth()->user();
+            $user->load([
+            'student_details:id,user_id,result',
+        ]);
             return $user
                 && $user->user_type === 'student'
                 && $user->student_details
@@ -27,7 +31,11 @@ class AppServiceProvider extends ServiceProvider
         });
         // For students who are in progress
         Blade::if('studentInProgress', function () {
+            // dd('ss');
             $user = auth()->user();
+            $user->load([
+            'student_details:id,user_id,result',
+        ]);
             return $user
                 && $user->user_type === 'student'
                 && $user->student_details

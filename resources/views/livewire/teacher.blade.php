@@ -277,8 +277,8 @@
                     </tbody>
                 </table>
                 <div class="mt-3">
-                            {{ $teachers->links() }}
-                        </div>
+                    {{ $teachers->links() }}
+                </div>
             </div>
         </div>
 

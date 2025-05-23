@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // bigint unsigned auto-increment primary key
             $table->string('title')->nullable();
-            $table->integer('course_id')->nullable();
-            $table->integer('session_id')->nullable();
-            $table->longText('question')->nullable();
+            $table->unsignedInteger('course_id')->nullable();
+            $table->unsignedInteger('session_id')->nullable();
+            $table->longText('question');
             $table->string('correct_answer')->nullable();
             $table->integer('marks')->nullable();
             $table->text('options')->nullable();
@@ -25,7 +25,8 @@ return new class extends Migration
             $table->text('desc_images')->nullable();
             $table->text('video_link')->nullable();
             $table->enum('is_publish', ['publish', 'not_publish'])->default('not_publish');
-            $table->timestamps();
+            $table->timestamp('created_on')->useCurrent();
+            $table->boolean('is_deleted')->default(false);
         });
     }
 

@@ -16,13 +16,14 @@ class StudentDetail extends Model
         'course_id',
         'suspend_date',
         'reason_suspend',
-        'is_completed',
         'result',
         'entry_test',
-        'test_countdown'
+        'test_countdown',
+        'test_started'
     ];
     protected $casts = [
         'entry_test' => 'boolean',
+        'test_started'=>'boolean'
     ];
     // as entry test got completed entry_test will get true
     // result will generate from In_progress to other
