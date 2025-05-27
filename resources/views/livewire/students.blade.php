@@ -7,32 +7,16 @@
     <div class="col-span-12 space-y-6 xl:col-span-12">
         <div
             class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-            <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                        See All Students
-                    </h3>
+                <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+                            See All Students
+                        </h3>
+                    </div>
                 </div>
-            </div>
 
             <div class="w-full overflow-x-auto">
                 <table class="min-w-full">
-                    <div class="input-group flex flex-col">
-                        <label class="mb-1.5  text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Select Group
-                        </label>
-                        <select  wire:model="group_name"
-                            class="h-10 w-80 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800
-    placeholder:text-gray-400 focus:border-brand-300 focus:ring-brand-500/10 focus:ring-2 focus:outline-none
-    dark:bg-dark-900 dark:border-gray-700 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">
-                            <option value="all">All Students</option>
-                            @foreach ($groups as $group)
-                                <option value="{{ $group->id }}">{{ $group->group_name }}</option>
-                            @endforeach
-                        </select>
-
-
-                    </div>
                     <!-- table header start -->
                     <thead>
                         <tr class="border-gray-100 border-y dark:border-gray-800">
@@ -80,13 +64,6 @@
                                 </div>
                             </th>
 
-                            <th class="py-3">
-                                <div class="flex items-center col-span-2">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        Action
-                                    </p>
-                                </div>
-                            </th>
                         </tr>
                     </thead>
                     <!-- table header end -->

@@ -31,9 +31,9 @@
                         </label>
                         <input type="text" wire:model="task_title" placeholder="Enter Task Title"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30" />
+                                        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                        dark:placeholder:text-white/30" />
                         @error('task_title')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -47,9 +47,9 @@
                         </label>
                         <textarea wire:model="task_description" placeholder="Enter Task Description"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30"></textarea>
+                                w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                dark:placeholder:text-white/30"></textarea>
                         @error('task_description')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -62,10 +62,10 @@
                             Number of Days
                         </label>
                         <select wire:model="number_of_days"
-                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30">
+                            class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                                shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10
+                                                dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800
+                                                dark:bg-dark-900">
                             <option value="">Select Days</option>
                             @for ($i = 1; $i <= 60; $i++)
                                 <option value="{{ $i }}">{{ $i }} day{{ $i > 1 ? 's' : '' }}
@@ -84,9 +84,9 @@
                         </label>
                         <input type="number" wire:model="total_marks" placeholder="e.g., 100"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30" />
+                                                h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                                placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                                dark:placeholder:text-white/30" />
                         @error('total_marks')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -100,9 +100,9 @@
                         </label>
                         <input type="file" wire:model="attachment_link"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30" />
+                                h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                dark:placeholder:text-white/30" />
                         @error('attachment_link')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -115,10 +115,10 @@
                             Select Group
                         </label>
                         <select wire:model="group_name"
-                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30">
+                            class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                                shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10
+                                                dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800
+                                                dark:bg-dark-900">
                             <option value="">Select Group</option>
                             @foreach ($groups as $group)
                                 <option value="{{ $group->id }}">{{ $group->group_name }}</option>
@@ -138,9 +138,9 @@
                         </label>
                         <input type="text" disabled value="{{ $session_active->session_year }}"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-        dark:placeholder:text-white/30" />
+                                        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                        dark:placeholder:text-white/30" />
                         <input type="hidden" wire:model="session_year_id" />
                     </div>
                     <!-- Submit Button -->
@@ -432,8 +432,7 @@
     <div x-data="{ showTaskViewModal: false }" x-on:open-task-view-modal.window="showTaskViewModal = true" style="z-index: 99999">
         <!-- Modal -->
         <div x-show="showTaskViewModal" x-transition
-            class="fixed inset-0 flex items-center justify-center p-5 overflow-y-auto z-50"
-            style="display: none;">
+            class="fixed inset-0 flex items-center justify-center p-5 overflow-y-auto z-50" style="display: none;">
 
             <!-- Background Overlay -->
             <div @click="showTaskViewModal = false" class="fixed inset-0 bg-gray-400/50 backdrop-blur-sm"></div>
@@ -458,42 +457,41 @@
                 </div>
 
                 <!-- Table -->
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm text-left text-gray-700 dark:text-gray-300">
-                            <thead class="bg-gray-100 dark:bg-gray-800 text-xs uppercase">
-                                <tr>
-                                    <th class="px-4 py-3">Students</th>
-                                    <th class="px-4 py-3">Description</th>
-                                    <th class="px-4 py-3">Attachment</th>
-                                    <th class="px-4 py-3">Students Marks</th>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm text-left text-gray-700 dark:text-gray-300">
+                        <thead class="bg-gray-100 dark:bg-gray-800 text-xs uppercase">
+                            <tr>
+                                <th class="px-4 py-3">Students</th>
+                                <th class="px-4 py-3">Description</th>
+                                <th class="px-4 py-3">Attachment</th>
+                                <th class="px-4 py-3">Students Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($submitedTasks as $task)
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <td class="px-4 py-3">{{ $task->user->full_name }} </td>
+                                    <td class="px-4 py-3">{{ $task->description }}</td>
+                                    <td class="px-4 py-3">
+                                        @if ($task->attachment_link)
+                                            <a href="{{ asset('attachments/' . $task->attachment_link) }}"
+                                                class="text-blue-500 underline" target="_blank">
+                                                View
+                                            </a>
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <input type="number" wire:model.lazy="marks.{{ $task->id }}"
+                                            class="w-20 px-2 py-1 border rounded" placeholder="Marks"
+                                            min="0" />
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($submitedTasks as $task)
-                                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                                        <td class="px-4 py-3">{{ $task->user->full_name }} </td>
-                                        <td class="px-4 py-3">{{ $task->description }}</td>
-                                        <td class="px-4 py-3">
-                                            @if ($task->attachment_link)
-                                                <a href="{{ asset('attachments/' . $task->attachment_link) }}"
-                                                    class="text-blue-500 underline" target="_blank">
-                                                    View
-                                                </a>
-                                            @else
-                                                N/A
-                                            @endif
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <input type="number"
-                                                   wire:model.lazy="marks.{{ $task->id }}"
-                                                   class="w-20 px-2 py-1 border rounded"
-                                                   placeholder="Marks" min="0" />
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Footer Buttons -->
                 <div class="mt-6 text-right">

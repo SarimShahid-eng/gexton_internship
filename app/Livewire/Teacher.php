@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\CustomSession;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 
 
@@ -43,7 +44,7 @@ class Teacher extends Component
         $validatedData = $this->validate($rules);
         $validatedData['user_type']='teacher';
         if ($this->password) {
-            $validatedData['password'] = Crypt::encrypt($this->password);
+            $validatedData['password'] = Hash::make($this->password);
         }
 
         if ($this->id) {

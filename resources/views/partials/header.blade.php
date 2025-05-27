@@ -114,7 +114,8 @@
                             {{ auth()->user()->email }}
                         </span>
                     </div>
-
+                    @studentInProgress
+                    @else
                         <ul class="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">
                             <li>
                                 <a href="{{ route('show_profile') }}"
@@ -146,8 +147,7 @@
                                 Sign out
                             </button>
                         </form>
-
-
+                    @endstudentInProgress
                 </div>
                 <!-- Dropdown End -->
             </div>

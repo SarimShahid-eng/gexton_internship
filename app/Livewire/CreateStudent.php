@@ -44,7 +44,7 @@ class CreateStudent extends Component
                 'course_id' => 'required',
                 'teacher_name' => 'required',
                 'group_id' => 'required',
-                'email' => 'required|email',
+                'email' => 'unique:users,email,'.$this->update_id,
                 'firstname' => 'required',
                 'lastname' => 'required',
                 'phone' => 'required',

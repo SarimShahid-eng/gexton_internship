@@ -16,7 +16,7 @@
 
             {{-- Marks --}}
             <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                📊 Marks: <span class="font-semibold text-green-600 dark:text-green-400">{{ $task->task_marks->obtain_marks }}</span> /
+                📊 Marks: <span class="font-semibold text-green-600 dark:text-green-400">{{ @$task->task_marks->obtain_marks }}</span> /
                 <span class="text-gray-500 dark:text-gray-400">{{ $task->total_marks }}</span>
             </p>
 
