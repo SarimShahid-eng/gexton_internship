@@ -30,9 +30,12 @@
                         </label>
                         <input type="text" wire:model="firstname" placeholder="Enter first name"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-                                    h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-                                    placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-                                    dark:placeholder:text-white/30" />
+        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+        dark:placeholder:text-white/30" />
+                        @error('firstname')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Last Name -->
@@ -42,9 +45,12 @@
                         </label>
                         <input type="text" wire:model="lastname" placeholder="Enter last name"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-                                    h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-                                    placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-                                    dark:placeholder:text-white/30" />
+        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+        dark:placeholder:text-white/30" />
+                        @error('lastname')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Email -->
@@ -54,9 +60,12 @@
                         </label>
                         <input type="email" wire:model="email" placeholder="info@example.com"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-                                        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-                                        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-                                        dark:placeholder:text-white/30" />
+        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+        dark:placeholder:text-white/30" />
+                        @error('email')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Phone Number -->
@@ -66,9 +75,12 @@
                         </label>
                         <input type="text" wire:model="phone" placeholder="Enter phone number"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-                                    h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-                                    placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-                                    dark:placeholder:text-white/30" />
+        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+        dark:placeholder:text-white/30" />
+                        @error('phone')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Session -->
@@ -91,9 +103,12 @@
                         </label>
                         <input type="password" wire:model="password" placeholder="Enter password"
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
-                                    h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
-                                    placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
-                                    dark:placeholder:text-white/30" />
+        h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+        placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+        dark:placeholder:text-white/30" />
+                        @error('password')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
 
@@ -111,6 +126,9 @@
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
+                        @error('is_active')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
 
