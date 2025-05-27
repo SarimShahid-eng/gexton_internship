@@ -26,12 +26,14 @@ class LoginController extends Controller
 
             if ($user->user_type === "student") {
                 if ($user->student_details && $user->student_details->result === 'pass') {
-                    return to_route('upload_task');
+                    return to_route('students.create_task');
                 } elseif ($user->student_details && $user->student_details->result == 'In_progress') {
                     return to_route('entry_test');
                 }
             } elseif ($user->user_type === 'admin') {
                 return redirect()->intended('dashboard');
+            } elseif ($user->user_type === 'teacher') {
+                return redirect()->route('teacher.students');
             }
         }
 

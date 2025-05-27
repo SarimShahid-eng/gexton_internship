@@ -1,11 +1,16 @@
 <?php
 
+use App\Livewire\Students;
+use App\Livewire\TeacherTask;
 use Livewire\Livewire;
 use App\Livewire\Group;
 use App\Livewire\Teacher;
 use App\Livewire\Question;
 use App\Livewire\Dashboard;
 use App\Livewire\EntryTest;
+// use App\Livewire\CreatePost;
+use App\Livewire\CreateTask;
+use App\Livewire\UploadTask;
 use App\Livewire\EditProfile;
 use App\Livewire\CreateResult;
 use App\Livewire\CreateCourses;
@@ -30,8 +35,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/show-questions', Question::class)->name('show_questions');
         Route::get('/show-result', CreateResult::class)->name('show_result');
     });
-    // students didvided into two categ pass or In_progress(who are attempting)
+    // Teacher
+    Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
+        // Route::get('/dashboard', Dashboard::class)->name('dashboard');
+        Route::get('/task', TeacherTask::class)->name('task');
+        Route::get('students', Students::class)->name('students');
 
+    });
+    Route::middleware(['role:student', 'pass'])->prefix('students')->name('students.')->group(function () {
+        Route::get('/task', CreateTask::class)->name('create_task');
+        Route::get('/upload-task', UploadTask::class)->name('upload_task');
+    });
     Route::middleware(['role:student', 'In_progress'])->group(function () {
         Route::get('/entry-test', EntryTest::class)->name('entry_test');
     });
