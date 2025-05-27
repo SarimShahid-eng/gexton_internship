@@ -33,6 +33,9 @@
         h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
+                        @error('firstname')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Last Name -->
@@ -45,6 +48,9 @@
         h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
+                        @error('lastname')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Email -->
@@ -57,6 +63,9 @@
         h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
+                        @error('email')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Phone Number -->
@@ -69,6 +78,9 @@
         h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
+                        @error('phone')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Session -->
@@ -94,6 +106,9 @@
         h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
+                        @error('password')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
 
@@ -111,6 +126,9 @@
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
+                        @error('is_active')
+                            <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 class Teacher extends Component
 {
     use WithPagination;
-    public $firstname, $lastname, $email, $phone, $session_year_id, $password, $is_active, $id;
+    public $firstname, $lastname, $email, $phone, $session_year_id, $password, $is_active, $id, $new_password;
 
     public function render()
     {
@@ -31,7 +31,16 @@ class Teacher extends Component
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|unique:users,phone',
             'session_year_id' => 'required|integer',
+            'password' => $this->id ? 'nullable': 'required',
             'is_active' => 'required',
+        ];
+        $messages = [
+            'firstname.required' => 'Please enter the first name.',
+            'lastname.required' => 'Please enter the second name',
+            'email.required' => 'Please enter the email',
+            'phone.required' => 'Please enter the phone number',
+            'password.required' => 'Please enter the phone number',
+            'is_active.required' => 'Please select the status',
         ];
         // If updating, ignore unique check for current record
         if ($this->id) {
@@ -40,12 +49,14 @@ class Teacher extends Component
         }
 
 
-        $validatedData = $this->validate($rules);
+        $validatedData = $this->validate($rules, $messages);
         $validatedData['user_type']='teacher';
         if ($this->password) {
             $validatedData['password'] = Crypt::encrypt($this->password);
         }
-
+        if ($this->id && !$this->password) {
+            unset($validatedData['password']);
+        }
         if ($this->id) {
             User::where('id', $this->id)->update($validatedData);
             session()->flash('message', 'Teacher Updated Successfully');
@@ -71,6 +82,7 @@ class Teacher extends Component
         $this->lastname = $teacher->lastname;
         $this->email = $teacher->email;
         $this->phone = $teacher->phone;
+        $this->new_password = $teacher->password;
         $this->session_year_id = $teacher->session_year_id;
         $this->is_active = $teacher->is_active;
         $this->id = $teacher->id;
