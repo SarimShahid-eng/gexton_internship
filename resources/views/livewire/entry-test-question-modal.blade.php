@@ -52,6 +52,7 @@
                 </div>
 
                 <!-- Question -->
+
                 @foreach ($results as $result)
                     <div>
                         <div class="flex items-center ">
@@ -85,6 +86,13 @@
                         </div>
                     </div>
                 @endforeach
+                @if ($totalStudentAttemptedQuest <= 0)
+                    <div>
+                        <h5 class="text-xl text-red-600 text-center dark:text-gray-200">
+                            You havent attempted any questions
+                        </h5>
+                    </div>
+                @endif
 
             </div>
         </div>

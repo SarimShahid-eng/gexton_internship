@@ -15,7 +15,7 @@ class EntryTest extends Component
 {
     public $questions;
     public $results = [];
-    public $wrongQuestionCount, $correctQuestionCount, $totaltestQuestionCount, $totalStudentAttemptedQuest, $totalQuestionForResult;
+    public $wrongQuestionCount, $correctQuestionCount, $totaltestQuestionCount, $totalStudentAttemptedQuest = 0, $totalQuestionForResult;
     public $totalTestTimeInSeconds, $currentIndex = 0, $currentQuestion, $selectedOption = null, $user;
     public $sessionId;
     public $testStarted = false;
@@ -27,55 +27,59 @@ class EntryTest extends Component
 
     public function mount()
     {
-
-
         $user = Auth::user();
         $this->sessionId = CustomSession::where('is_selected', 1)->first();
         $this->user = $user;
         $user = $user->load([
-            'student_details:id,course_id,user_id,test_countdown,entry_test,test_started',
+            'student_details:id,course_id,user_id,test_countdown,entry_test,timer_started',
             'student_details.course:id,course_title,test_time'
         ]);
 
 
         $studentDetails = $user->student_details;
-        $this->testStarted = $studentDetails->test_started;
+        $this->testStarted = $studentDetails->timer_started;
 
         $userSessionId = $user->session_year_id;
         $userCourseId = $studentDetails->course_id;
-        $questionAttemptedCount = Result::where('user_id', $user->id)
+        $userId = $user->id;
+        $questionAttemptedCount = Result::where('user_id', $userId)
             ->where('course_id', $userCourseId)
             ->where('session_id', $userSessionId)
             ->count();
         if ($questionAttemptedCount > 1) {
             $this->currentIndex = $questionAttemptedCount;
         }
-        $getStudentPerformance = TestMark::where('course_id', $userCourseId)->where('session_id', $userSessionId)->where('student_id', $user->id)->first();
+        $getStudentPerformance = TestMark::where('course_id', $userCourseId)->where('session_id', $userSessionId)->where('student_id', $userId)->first();
         $this->isCompleted = $studentDetails->entry_test;
         if (!is_null($getStudentPerformance)) {
-            // $this->totaltestQuestionCount = $getStudentPerformance->total_questions;
-            // dd($this->totaltestQuestionCount);
-
             $this->percentage = $getStudentPerformance->percentage;
+            $this->totalStudentAttemptedQuest = $getStudentPerformance->correct_ans + $getStudentPerformance->wrong_ans;
         }
-        $this->questions = Question::where('course_id', $studentDetails->course_id)->get();
+        $this->questions = Question::where('course_id', $userCourseId)
+            ->where('session_id', $userSessionId)
+            ->get();
         $this->currentQuestion = $this->questions[$this->currentIndex] ?? null;
 
         $courseTime = optional($studentDetails->course)->test_time;
         $testCountdown = $studentDetails->test_countdown;
-        $duration = ($testCountdown && $testCountdown !== '00:00:00')
-            ? $testCountdown
-            : $courseTime;
+
+        $duration = $testCountdown;
         [$this->durationMinutes, $this->durationSeconds] = $this->convertToMinutesAndSeconds($duration);
         $this->totalTestTimeInSeconds = $this->convertToSeconds($courseTime);
-        }
+    }
     public function startTest()
     {
+        // on start test update everything of the component as well
+        $studentDetails = $this->user->student_details;
+        $selectedCourseCountdown = $studentDetails->course->test_time;
         $this->testStarted = true;
         $this->user->student_details->update([
-            'test_started' => '1'
+            'timer_started' => '1',
+            'test_countdown' => $selectedCourseCountdown
         ]);
-
+        $testCountdown = $studentDetails->test_countdown;
+        $duration = $testCountdown;
+        [$this->durationMinutes, $this->durationSeconds] = $this->convertToMinutesAndSeconds($duration);
     }
     private function convertToSeconds($time)
     {
@@ -84,9 +88,40 @@ class EntryTest extends Component
     }
     public function setRemainingTime($time)
     {
+        // as ten seconds passed a new record of test marks will be created
+        $userId = $this->user->id;
+        $userSessionId = $this->user->session_year_id;
+        $userCourseId =  $this->user->student_details->course_id;
+        TestMark::firstOrCreate(
+            [
+                'student_id' => $userId,
+                'course_id' => $userCourseId,
+                'session_id' => $userSessionId,
+            ],
+            [
+                'wrong_ans' => 0,
+                'correct_ans' => 0,
+                'total_questions' => $this->questions->count(),
+                'percentage' => '0%',
+            ]
+        );
+        $getStudentPerformance = TestMark::where('course_id', $userCourseId)->where('session_id', $userSessionId)->where('student_id', $userId)->first();
+        if (!is_null($getStudentPerformance)) {
+            $this->percentage = $getStudentPerformance->percentage;
+            $setAttemptedQuestionCount = $getStudentPerformance->correct_ans + $getStudentPerformance->wrong_ans;
+            $this->totalStudentAttemptedQuest = $setAttemptedQuestionCount;
+        }
+        // entry test true marks the completion of the test
+        // test_started marks the starting of test
+        if ($time === 0) {
+            $this->isCompleted = true;
+            $this->user->student_details->update([
+                'entry_test' => '1',
+            ]);
+        }
         $formattedTime =  gmdate('H:i:s', $time);
         $this->user->student_details->update([
-            'test_countdown' => $formattedTime
+            'test_countdown' => $formattedTime,
         ]);
     }
 
@@ -135,17 +170,26 @@ class EntryTest extends Component
     }
     public function showResultModal()
     {
+        $userId = $this->user->id;
         $courseId = $this->user->student_details->course_id;
-        $result = Result::where('user_id', $this->user->id)->where('course_id', $courseId)
-            ->where('correct_answer', false)
+        $resultQuery = Result::where('user_id', $userId)->where('course_id', $courseId);
+        $wrongQuestionModalDisplay = (clone $resultQuery)->where('correct_answer', false)
             ->get();
-        $test_marks = TestMark::where('student_id', $this->user->id)->where('course_id', $courseId)
-            ->first();
-        $this->wrongQuestionCount = $test_marks->wrong_ans;
-        $this->correctQuestionCount = $test_marks->correct_ans;
-        $this->totalQuestionForResult = $test_marks->total_questions;
 
-        $this->results = $result;
+        $getQuestionsFromCourse = $this->user->student_details->course->questions_limit;
+        $test_marks = TestMark::where('student_id', $userId)->where('course_id', $courseId)
+            ->first();
+        $this->totalQuestionForResult = $getQuestionsFromCourse;
+        if ($test_marks) {
+            $this->wrongQuestionCount = $test_marks->wrong_ans;
+            $this->correctQuestionCount = $test_marks->correct_ans;
+        } else {
+            $this->wrongQuestionCount = 0;
+            $this->correctQuestionCount = 0;
+        }
+        // now get student Attempted Questions
+
+        $this->results = $wrongQuestionModalDisplay;
         $this->dispatch('show-result');
     }
     protected function saveResult()
@@ -153,7 +197,6 @@ class EntryTest extends Component
         $userId = $this->user->id;
         $courseId = $this->user->student_details->course_id;
         $sessionId = $this->sessionId->id;
-        // dd($sessionId);
         $questionId = $this->currentQuestion->id;
         $totalQuestions = $this->questions->count();
         $answer = $this->selectedOption;
@@ -173,7 +216,7 @@ class EntryTest extends Component
     {
         $userId = $this->user->id;
         $courseId = $this->user->student_details->course_id;
-        $sessionId = $this->sessionId->id; // static for now
+        $sessionId = $this->sessionId->id;
         $userSessionId = $this->user->session_year_id;
 
         $testMark = TestMark::firstOrCreate(
@@ -207,7 +250,9 @@ class EntryTest extends Component
             ->count();
 
         $attempted_questions = (clone $resultQuery)->count();
-        $getStudentPerformance =   TestMark::where('course_id', $courseId)->where('session_id', $userSessionId)->where('student_id', $userId)->first();
+        $getStudentPerformance = TestMark::where('course_id', $courseId)->where('session_id', $userSessionId)->where('student_id', $userId)->first();
+
+        $this->totalStudentAttemptedQuest = $getStudentPerformance->correct_ans + $getStudentPerformance->wrong_ans;
         // Original course Question count === attempted questions
         if ($questions === $attempted_questions) {
             $this->user->student_details->update([
@@ -224,5 +269,11 @@ class EntryTest extends Component
         ]);
         Auth::logout();
         return to_route('login');
+    }
+    public function autoSubmitWhenTimeUp()
+    {
+        $this->user->student_details->update([
+            'entry_test' => '1'
+        ]);
     }
 }

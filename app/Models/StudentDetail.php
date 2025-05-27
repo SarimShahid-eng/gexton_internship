@@ -19,11 +19,11 @@ class StudentDetail extends Model
         'result',
         'entry_test',
         'test_countdown',
-        'test_started'
+        'timer_started'
     ];
     protected $casts = [
         'entry_test' => 'boolean',
-        'test_started'=>'boolean'
+        'timer_started'=>'boolean'
     ];
     // as entry test got completed entry_test will get true
     // result will generate from In_progress to other

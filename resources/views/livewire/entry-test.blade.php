@@ -2,25 +2,24 @@
 
     <!-- Card 2: Question count + MCQ -->
     @if (!$testStarted && !$isCompleted)
-    @dd($testStarted);
-    <div
-        class="max-w-md mx-auto mt-30 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 text-center space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Ready to Begin Your Test?</h2>
-        <p class="text-gray-600 dark:text-gray-300">
-            Click the button below to start your internship test. Make sure you're prepared before beginning, as the
-            timer will start immediately.
-        </p>
+        <div
+            class="max-w-md mx-auto mt-30 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 text-center space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Ready to Begin Your Test?</h2>
+            <p class="text-gray-600 dark:text-gray-300">
+                Click the button below to start your internship test. Make sure you're prepared before beginning, as the
+                timer will start immediately.
+            </p>
 
-        <!-- Circular Start Button -->
-        <button  wire:click="startTest"
-            class="w-24 h-24 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold mx-auto transition duration-300">
-            Start
-        </button>
-    </div>
+            <!-- Circular Start Button -->
+            <button wire:click="startTest"
+                class="w-24 h-24 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold mx-auto transition duration-300">
+                Start
+            </button>
+        </div>
     @endif
 
     <div class="max-w-6xl mx-auto mt-2 space-y-8" x-data="{ completed: @entangle('isCompleted') }">
-        @if ($testStarted && !$isCompleted && $totaltestQuestionCount !== $currentIndex && $currentQuestion)
+        @if ($testStarted && !$isCompleted && ($durationMinutes > 0 || $durationSeconds > 0))
             <!-- Top Bar -->
             <div class="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-800 rounded-xl shadow-md">
 
@@ -91,9 +90,10 @@
                     </button>
                 </div>
             </div>
+
         @endif
         <div x-show="completed" x-transition.opacity.duration.500ms
-            class="max-w-xl mx-auto mt-10 p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl text-center space-y-5">
+            class="max-w-xl mx-auto mt-10 p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl text-center space-y-4">
 
             {{-- Course Title --}}
             <h2 class="text-2xl  font-semibold text-gray-800 dark:text-gray-100">
@@ -125,7 +125,9 @@
                 class="text-xl font-semibold {{ $percentage >= 40 ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
                 You are {{ $percentage >= 40 ? 'Passed' : 'Failed' }}!
             </div>
-
+            <div class="text-sm text-gray-500 dark:text-gray-300">
+                Question Attempt:{{ $totalStudentAttemptedQuest }}
+            </div>
             {{-- Subtext --}}
             <div class="text-sm text-gray-500 dark:text-gray-300">
                 {{ $percentage >= 40
@@ -168,6 +170,10 @@
                     if (this.remainingTime <= 0) {
                         clearInterval(this.interval);
                         this.remainingTime = 0;
+                        Livewire.dispatch('setRemainingTime', {
+                            time: window.remainingTimeGlobal
+                        });
+                        // Livewire.dispatch('autoSubmitWhenTimeUp');
                     } else {
                         this.remainingTime--;
                     }

@@ -332,10 +332,11 @@
                                                         No Students
                                                         records found</h3>
                                             </td>
-                                    </div>
-                                    </tr>
+                                        </div>
+                                        </tr>
+                                    @endforelse
+
                                 </tbody>
-                        @endforelse
 
                         {{-- <div x-data="{ open: false }" x-init="window.addEventListener('swal-confirm', () => {
                             Swal.fire({

@@ -2,7 +2,7 @@
     <div class="col-span-12 space-y-6 xl:col-span-12">
         <div x-data="questionFormComponent()" x-init="init()"
             class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-            <h5 class="flex justify-between items-center text-lg font-semibold">
+            <h5 class="flex justify-between items-center text-lg font-semibold dark:text-gray-200">
                 Create Question
 
                 <button @click="showCourseForm = !showCourseForm" class="transition-transform hover:rotate-90">
@@ -20,12 +20,20 @@
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Select Course
                         </label>
-                        <select wire:model.defer="course_id" class="h-11 w-full rounded-lg border px-4 py-2.5 text-sm">
+                        <select wire:model.defer="course_id" class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                    shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10
+                                    dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800
+                                    dark:bg-dark-900">
                             <option value="">Select a course</option>
-                            <option value="1">Course 1</option>
-                            <option value="2">Course 2</option>
-                            <option value="3">Course 3</option>
+                            @foreach ($courses as $course)
+                                <option value="{{ $course->id }}" {{ $course->id == $course_id ? 'selected' : '' }}>
+                                    {{ $course->course_title }}</option>
+                            @endforeach
                         </select>
+                        @error('course_id')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+
                     </div>
 
                     <!-- Title -->
@@ -34,7 +42,11 @@
                             Question Title
                         </label>
                         <input type="text" wire:model.defer="title" placeholder="Enter question title"
-                            class="h-11 w-full rounded-lg border px-4 py-2.5 text-sm" />
+                            class="h-11 w-full rounded-lg border px-4 py-2.5 text-sm dark:placeholder:text-white/30" />
+                        @error('title')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+
                     </div>
 
                     <!-- Session -->
@@ -42,8 +54,12 @@
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Session
                         </label>
-                        <input type="text" wire:model.defer="session_id" placeholder="e.g., 2024"
-                            class="h-11 w-full rounded-lg border px-4 py-2.5 text-sm" />
+                        <input type="text" disabled value="{{ $session_active->session_year }}"
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800
+                                h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
+                                placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
+                                dark:placeholder:text-white/30" />
+                        <input type="hidden" wire:model="session_year_id" />
                     </div>
 
                     <!-- Question Text -->
@@ -52,47 +68,28 @@
                             Question
                         </label>
                         <textarea wire:model.defer="question" placeholder="Enter the question here"
-                            class="h-32 w-full rounded-lg border px-4 py-2.5 text-sm"></textarea>
+                            class="h-32 w-full rounded-lg border px-4 py-2.5 text-sm dark:placeholder:text-white/30"></textarea>
+                        @error('question')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+
                     </div>
 
 
-                    <div x-data="{
-                        options: [],
-                        correct_answer: '',
-                        updateLivewire() {
-                            $wire.set('options', this.options);
-                            $wire.set('correct_answer', this.correct_answer);
-                        },
-                        loadQuestion(data) {
-                            if (typeof data.options === 'string') {
-                                this.options = JSON.parse(data.options);
-                            } else {
-                                this.options = data.options || [];
-                            }
-                            this.correct_answer = data.correct_answer || '';
-                            this.updateLivewire();
-                        },
-                        addOption() {
-                            this.options.push('');
-                            this.updateLivewire();
-                        },
-                        removeOption(index) {
-                            this.options.splice(index, 1);
-                            this.updateLivewire();
-                        }
-                    }" x-init="window.addEventListener('edit-question-loaded', event => {
-                        loadQuestion(event.detail);
-                    });">
+                    <div x-data="questionFormComponent()" x-init="init();
+                    window.addEventListener('question-saved', () => resetForm());"
+                        x-on:edit-question-loaded.window="loadQuestion($event.detail)">
 
-                        <!-- Hidden fields to sync Livewire -->
-                        <input type="hidden" x-ref="optionsInput" wire:model.defer="options">
-                        <input type="hidden" x-ref="correctInput" wire:model.defer="correct_answer">
+                        <!-- Hidden inputs for Livewire sync -->
+                        <input type="hidden" x-ref="optionsInput" wire:model.defer="options" />
+                        <input type="hidden" x-ref="correctInput" wire:model.defer="correct_answer" />
 
-                        <!-- Your dynamic options list -->
+                        <!-- Dynamic Options -->
                         <div class="space-y-6">
                             <div class="flex items-center justify-between">
-                                <label class="text-base font-semibold text-gray-800 dark:text-gray-200">Add your
-                                    options</label>
+                                <label class="text-base font-semibold text-gray-800 dark:text-gray-200">
+                                    Add your options
+                                </label>
                                 <span class="text-xs text-gray-500 dark:text-gray-400">Mark one as correct</span>
                             </div>
 
@@ -105,7 +102,8 @@
                                     </div>
 
                                     <div class="flex items-center space-x-2">
-                                        <input type="radio" :value="options[index]" x-model="correct_answer"
+                                        <!-- Radio with value as index -->
+                                        <input type="radio" :value="index" x-model="correct_answer"
                                             @change="updateLivewire()" />
                                         <span>Correct</span>
                                     </div>
@@ -127,6 +125,7 @@
                             </button>
                         </div>
                     </div>
+
 
                     <!-- Submit -->
                     <div>
@@ -205,7 +204,7 @@
 
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{ $question->course->course_title }}
+                                        {{-- {{ $question->course->course_title }} --}}
                                     </p>
                                 </td>
                                 <td class="py-3">
@@ -220,7 +219,7 @@
                                 </td>
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{ $question->question }}
+                                        {!! $question->question !!}
                                     </p>
                                 </td>
                                 <td class="py-3">
@@ -236,7 +235,7 @@
                                             </svg>
                                         </button>
 
-                                        <button wire:click="confirmDelete({{ $question->id }})"
+                                        {{-- <button wire:click="confirmDelete({{ $question->id }})"
                                             class="inline-flex items-center text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
                                             title="Delete">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -247,7 +246,7 @@
                                             </svg>
 
 
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </td>
                             @empty
@@ -289,7 +288,26 @@
 </div>
 
 <script>
-    window.addEventListener('course-saved', event => {
+    window.addEventListener('question-saved', event => {
+        let data = event.detail;
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        })
+        Toast.fire({
+            icon: "success",
+            title: data.text
+        });
+
+    });
+    window.addEventListener('question-deleted', event => {
         let data = event.detail;
         const Toast = Swal.mixin({
             toast: true,
@@ -309,26 +327,33 @@
 
     });
 
+
     function questionFormComponent() {
         return {
-            options: [''],
+            options: [],
             correct_answer: '',
-            showCourseForm: true,
+            showCourseForm: true, // colon, not equal sign
 
             init() {
-                this.updateLivewire();
+                this.$watch('options', () => this.updateLivewire());
+                this.$watch('correct_answer', () => this.updateLivewire());
             },
 
             loadQuestion(data) {
-                console.log(data)
-                this.options = data.options || [''];
-                this.correct_answer = data.correct_answer || '';
+                this.options = (typeof data.options === 'string') ?
+                    JSON.parse(data.options).map(opt => opt.trim()) :
+                    (data.options || ['']);
+
+                this.correct_answer = this.options.indexOf((data.correct_answer || '').trim());
+                if (this.correct_answer === -1) this.correct_answer = ''; // no correct answer selected
+
                 this.updateLivewire();
             },
 
             updateLivewire() {
                 this.$refs.optionsInput.value = JSON.stringify(this.options);
-                this.$refs.correctInput.value = this.correct_answer;
+                // store correct answer text, not index
+                this.$refs.correctInput.value = this.options[this.correct_answer] || '';
                 this.$refs.optionsInput.dispatchEvent(new Event('input'));
                 this.$refs.correctInput.dispatchEvent(new Event('input'));
             },
@@ -339,12 +364,19 @@
             },
 
             removeOption(index) {
-                if (this.options[index] === this.correct_answer) {
+                if (index === this.correct_answer) {
                     this.correct_answer = '';
+                } else if (index < this.correct_answer) {
+                    this.correct_answer -= 1; // adjust index if needed
                 }
                 this.options.splice(index, 1);
                 this.updateLivewire();
             },
-        };
+            resetForm() {
+                this.options = [''];
+                this.correct_answer = null;
+                this.updateLivewire();
+            }
+        }
     }
 </script>

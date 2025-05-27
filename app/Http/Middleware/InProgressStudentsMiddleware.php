@@ -16,7 +16,6 @@ class InProgressStudentsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd('ss');
         if(Auth::user()->student_details->result !== 'In_progress'){
             return abort(404);
         }
