@@ -217,7 +217,7 @@
                                 </td>
                                 <td class="py-3">
                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{ $question->question }}
+                                        {!! $question->question !!}
                                     </p>
                                 </td>
                                 <td class="py-3">

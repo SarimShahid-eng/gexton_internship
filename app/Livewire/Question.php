@@ -31,14 +31,10 @@ class Question extends Component
             'title.required' => 'The title is required.',
             'title.string' => 'The title must be a string.',
             'title.max' => 'The title must not exceed 255 characters.',
-
             'course_id.required' => 'Please select a course.',
             'course_id.integer' => 'Invalid course selected.',
-
-
             'question.required' => 'The question field cannot be empty.',
             'question.string' => 'The question must be valid text.',
-
             'correct_answer.required' => 'Please mark one option as the correct answer.',
         ];
         $validatedData = $this->validate($rules, $messages);

@@ -41,4 +41,8 @@ class StudentDetail extends Model
     {
         return $this->belongsTo(BatchGroup::class, 'group_id');
     }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'group_name', 'group_id');
+    }
 }

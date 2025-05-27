@@ -24,6 +24,7 @@ class Teacher extends Component
     }
     public function save()
     {
+        dd($this->all());
         $rules = [
             'firstname' => 'required',
             'lastname' => 'required',
