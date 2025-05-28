@@ -66,7 +66,7 @@ class Group extends Component
         $this->teacher_id = $batch->teacher_id;
         $this->from = \Carbon\Carbon::parse($batch->from)->format('H:i');
         $this->to = \Carbon\Carbon::parse($batch->to)->format('H:i');
-        $this->session_id = $batch->session_id;
+        $this->session_year_id = $batch->session_year_id;
         $this->group_name = $batch->group_name;
         $this->id = $id;
     }
