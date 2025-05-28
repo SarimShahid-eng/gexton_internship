@@ -14,7 +14,7 @@ class Group extends Component
 {
     use WithPagination;
 
-    public $course_id, $teacher_id, $from, $to, $session_id, $session_year_id, $group_name, $is_completed = 0, $id;
+    public $course_id, $teacher_id, $from, $to, $session_year_id, $group_name, $is_completed = 0, $id;
     public function render()
     {
         $session_active = CustomSession::where('is_selected', 1)->first();
@@ -27,6 +27,7 @@ class Group extends Component
     public function save()
     {
         // Validation rules
+        // dd($this->all());
         $rules = [
             'course_id' => 'required',
             'teacher_id' => 'required',
@@ -34,6 +35,14 @@ class Group extends Component
             'to' => 'required|date_format:H:i',
             'session_year_id' => 'required',
             'group_name' => 'required|string|max:255',
+        ];
+        $messages = [
+            'course_id.required' => 'Please select a course.',
+            'teacher_id.required' => 'Please select a teacher.',
+            'from.required' => 'Please select a start time.',
+            'to.required' => 'Please select an end time.',
+            'session_year_id.required' => 'Please select a session year.',
+            'group_name.required' => 'Please enter the group name.',
         ];
         // Validate the data
         $validatedData = $this->validate($rules);

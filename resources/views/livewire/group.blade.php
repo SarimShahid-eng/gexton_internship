@@ -37,6 +37,9 @@
                                 <option value="{{ $course->id }}">{{ $course->course_title }}</option>
                             @endforeach
                         </select>
+                        @error('course_id')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Teacher ID -->
@@ -53,6 +56,9 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('teacher_id')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- Group Name -->
                     <div class="input-group">
@@ -62,6 +68,9 @@
                         <input type="text" wire:model="group_name" placeholder="e.g., Batch A"
                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         dark:border-gray-700 dark:bg-dark-900 dark:text-white/90" />
+                        @error('group_name')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- From Time -->
                     <div class="input-group">
@@ -71,6 +80,9 @@
                         <input type="time" wire:model="from"
                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         dark:border-gray-700 dark:bg-dark-900 dark:text-white/90" />
+                        @error('from')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- To Time -->
@@ -81,6 +93,9 @@
                         <input type="time" wire:model="to"
                             class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800
         dark:border-gray-700 dark:bg-dark-900 dark:text-white/90" />
+                        @error('to')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
                     <!-- Session Year -->
                     <div class="input-group">
@@ -93,6 +108,9 @@
         placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:text-white/90
         dark:placeholder:text-white/30" />
                         <input type="hidden" wire:model="session_year_id" />
+                        @error('session_year_id')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
 
 
