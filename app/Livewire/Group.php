@@ -26,8 +26,6 @@ class Group extends Component
     }
     public function save()
     {
-        // Validation rules
-        // dd($this->all());
         $rules = [
             'course_id' => 'required',
             'teacher_id' => 'required',

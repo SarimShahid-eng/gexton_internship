@@ -11,21 +11,28 @@ use Livewire\WithoutUrlPagination;
 class CreateCourses extends Component
 {
     use WithPagination;
-    protected $paginationTheme='tailwind';
-    public $course_title, $course_description, $Duration, $created_date, $session_year_id, $test_time, $questions_limit, $hours, $minutes, $update_id, $courseIdToDelete;
+    protected $paginationTheme = 'tailwind';
+    public $course_title, $course_description, $Duration, $created_date, $session_year_id, $test_time, $questions_limit, $minutes, $update_id, $courseIdToDelete;
     public function render()
     {
-          $session_active = CustomSession::where('is_selected', 1)->first();
+        $session_active = CustomSession::where('is_selected', 1)->first();
         $this->session_year_id = $session_active->id;
         $courses = Course::paginate(10);
-        return view('livewire.create-courses', compact('courses','session_active'));
+        return view('livewire.create-courses', compact('courses', 'session_active'));
+    }
+    public function convertMinutesToTime($totalMinutes)
+    {
+        $hours = floor($totalMinutes / 60);
+        $minutes = $totalMinutes % 60;
+
+        return str_pad($hours, 2, '0', STR_PAD_LEFT) . ':' .
+            str_pad($minutes, 2, '0', STR_PAD_LEFT) . ':00';
     }
     public function save()
     {
         $validated = $this->validate([
             'course_title' => 'required',
             'course_description' => 'required',
-            'hours' => 'required',
             'minutes' => 'required',
             'Duration' => 'required',
             'created_date' => 'nullable',
@@ -34,10 +41,7 @@ class CreateCourses extends Component
             'questions_limit' => 'required',
         ]);
 
-        $formTestTime = $this->hours . ':' . $this->minutes . ':00';
-        $validated['test_time'] = $formTestTime;
-        $session_id = CustomSession::latest()->first();
-        // $validated['session_year_id'] = $session_id->id;
+        $validated['test_time'] = $this->convertMinutesToTime($this->minutes);
         $validated['created_date'] = now();
         Course::updateOrCreate(
             ['id' => $this->update_id],
@@ -53,14 +57,19 @@ class CreateCourses extends Component
             icon: 'success',
         );
     }
+    public function timeToMinutes($time)
+    {
+        [$hours, $minutes, $seconds] = explode(':', $time);
+        return ((int)$hours * 60) + (int)$minutes;
+    }
     public function edit($id)
     {
         $course = Course::findOrFail($id);
         $this->course_title = $course->course_title;
         $this->course_description = $course->course_description;
         $this->questions_limit = $course->questions_limit;
-        [$hours, $minutes, $seconds] = explode(':', $course->test_time);
-        $this->hours = $hours;
+
+        $minutes = $this->timeToMinutes($course->test_time);
         $this->minutes = $minutes;
         $this->Duration = $course->Duration;
         $this->update_id = $course->id;
@@ -71,9 +80,7 @@ class CreateCourses extends Component
         $this->course_title = $course->course_title;
         $this->course_description = $course->course_description;
         $this->questions_limit = $course->questions_limit;
-        [$hours, $minutes, $seconds] = explode(':', $course->test_time);
-        $this->hours = $hours;
-        $this->minutes = $minutes;
+        $this->minutes = $this->timeToMinutes($course->test_time);
         $this->Duration = $course->Duration;
         $this->update_id = $course->id;
     }

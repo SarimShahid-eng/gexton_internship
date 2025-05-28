@@ -53,50 +53,52 @@
 
                                 <!-- Selects Row -->
                                 <div class="input-group">
-                                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Duration Entry Test Time
-                                    </label>
-                                    <div class="flex gap-4">
+
+                                    <div class="flex gap-4 items-end">
+
 
                                         <div class="w-1/3 relative z-20 bg-transparent">
-                                            <select :class="selected && 'text-gray-800 dark:text-white/90'"
-                                                wire:model="hours"
-                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900"
-                                                @change="index === 0 ? selected1 = true : index === 1 ? selected2 = true : selected3 = true">
-                                                <option value="">Select Hours</option>
-                                                @foreach (range(0, 12) as $hour)
-                                                    <option value="{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}">
-                                                        {{ $hour }}
-                                                        {{ $hour == 1 || $hour == 0 ? 'Hour' : 'Hours' }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('hours')
-                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="w-1/3 relative z-20 bg-transparent">
-                                            <select :class="selected && 'text-gray-800 dark:text-white/90'"
+                                            <label
+                                                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                                Duration Entry Test Time
+                                            </label>
+                                             <input type="number" placeholder="Enter Minutes"
                                                 wire:model="minutes"
-                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900"
-                                                @change="index === 0 ? selected1 = true : index === 1 ? selected2 = true : selected3 = true">
-                                                <option value="">Select Minutes</option>
-                                                @foreach (range(1, 60) as $minute)
-                                                    <option value="{{ str_pad($minute, 2, '0', STR_PAD_LEFT) }}">
-                                                        {{ $minute }} {{ $minute == 1 ? 'Minute' : 'Minutes' }}
-                                                    </option>
-                                                @endforeach
-
-                                            </select>
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
                                             @error('minutes')
                                                 <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="w-1/3 relative z-20 bg-transparent">
+                                            <label
+                                                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                               Questions limit
+                                            </label>
                                             <input type="number" placeholder="Enter Questions limit"
                                                 wire:model="questions_limit"
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
                                             @error('questions_limit')
+                                                <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="w-1/3 relative z-20 bg-transparent">
+                                            <label
+                                                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                               Inernship Time Period
+                                            </label>
+                                            <select :class="selected && 'text-gray-800 dark:text-white/90'"
+                                                wire:model="Duration"
+                                                class="h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 dark:bg-dark-900">
+                                                <option value="">Select Weeks</option>
+                                                @foreach (range(1, 48) as $week)
+                                                    <option
+                                                        value="{{ $week == 1 ? $week . ' ' . 'Week' : $week . ' ' . 'Weeks' }}">
+                                                        {{ $week }}
+                                                        {{ $week == 1 ? 'Week' : 'Weeks' }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('Duration')
                                                 <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -107,7 +109,7 @@
 
                                     <div class="flex gap-4">
 
-                                        <div class="w-1/3 relative z-20 bg-transparent">
+                                        {{-- <div class="w-1/3 relative z-20 bg-transparent">
                                             <label
                                                 class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                                 Duration
@@ -127,7 +129,7 @@
                                             @error('Duration')
                                                 <span class="text-red-500 ms-2 mt-1">{{ $message }}</span>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                         <div class="w-1/3 relative z-20 bg-transparent">
                                             <label
                                                 class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">

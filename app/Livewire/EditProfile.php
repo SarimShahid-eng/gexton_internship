@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class EditProfile extends Component
 {
-    public $firstnameText, $lastnameText, $firstname, $lastname, $password;
+    public $firstnameText, $lastnameText, $firstname, $lastname, $password,$password_confirmation;
 
     public function mount()
     {
@@ -21,6 +21,7 @@ class EditProfile extends Component
     }
     public function edit()
     {
+
         $validated = $this->validate(
             [
                 'firstname' => 'required',
@@ -46,6 +47,9 @@ class EditProfile extends Component
         $user = User::find(auth()->user()->id);
         $this->firstname = $user->firstname;
         $this->lastname = $user->lastname;
+        $this->password='';
+        $this->password_confirmation='';
+
         $this->dispatch('open-profile-modal');
     }
 }
